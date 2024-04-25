@@ -23,4 +23,4 @@ Il naturale prosieguo di questo homework e' l'implementazione effettiva dell'ins
 con conseguente aggiornamento della classifica e del resoconto partite.
 
 La repository GITHUB per i vari homework e' disponibile al seguente indirizzo:
-https://github.com/Stefano0202/repository_homework.git
+https://github.com/matteoventali/repository_homework.git
