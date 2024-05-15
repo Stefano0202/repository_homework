@@ -3,8 +3,6 @@
 
     require_once 'gestoriXMLDOM.php';
 
-    $contenutoTabella = "";
-
     // Metodo per ottenere il codice HTML necessario a mostrare l'elenco delle partite nella tabella relativa
     // Riceve la lista delle partite
     function caricaPartite($listaPartite)
