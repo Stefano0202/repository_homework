@@ -1,0 +1,70 @@
+#sezioneLogin
+{
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#sezioneLogin form
+{
+    width: 80%;
+    height: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-style: solid;
+    background-color: #11999E;
+    box-shadow: 21px 27px 31px -2px black;
+    color:white;
+    gap: 1%;
+    padding: 20px;
+    overflow-y: auto; 
+    border-radius: 15px;   
+}
+
+#sezioneLogin form fieldset 
+{
+    display: flex;
+    flex-direction: row;
+    height: 25%;
+    width: 45%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    border-style: ridge;
+    border-color: white;
+}
+
+#sezioneLogin form fieldset p
+{
+    display: inline-block;
+    font-size: 200%;
+    width: 50%;
+    text-align: center;
+}
+
+#sezioneLogin form fieldset input[type="text"],
+#sezioneLogin form fieldset input[type="password"]
+{
+    display: inline-block;
+    height: 50%;
+    width: 45%;
+    font-size: 150%;
+    text-align: center;
+}
+
+#sezioneLogin form fieldset input[type="submit"],
+#sezioneLogin form fieldset input[type="reset"]
+{
+    display: inline-block;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: 150%;
+}

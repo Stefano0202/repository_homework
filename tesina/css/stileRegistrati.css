@@ -1,0 +1,70 @@
+#sezioneRegistrazione
+{
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#sezioneRegistrazione form
+{
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-style: solid;
+    background-color: #11999E;
+    box-shadow: 21px 27px 31px -2px black;
+    color:white;
+    gap: 5%;
+    padding:20px;
+    overflow-y: auto;
+    border-radius: 15px;
+}
+
+#sezioneRegistrazione form fieldset 
+{
+    display: flex;
+    flex-direction: row;
+    height: 15%;
+    width: 45%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 20px;
+    border-style: ridge;
+    border-color: white;
+}
+
+#sezioneRegistrazione form fieldset p
+{
+    display: inline-block;
+    font-size: 200%;
+    width: 50%;
+    text-align: center;
+}
+
+#sezioneRegistrazione form fieldset input[type="text"],
+#sezioneRegistrazione form fieldset input[type="password"]
+{
+    display: inline-block;
+    height: 40%;
+    width: 45%;
+    font-size: 130%;
+    text-align: center;
+}
+
+#sezioneRegistrazione form fieldset input[type="submit"],
+#sezioneRegistrazione form fieldset input[type="reset"]
+{
+    display: inline-block;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: 150%;
+}
