@@ -90,7 +90,7 @@
     {
         require_once 'cancellaSessione.php';
         $err = false;
-        echo "ooo";
+        
         // Nascondo la barra per i popup
         $popup = str_replace("%OPZIONE_DISPLAY_POPUP%", $opzione_display_popup_nascondi, $popup);
     }
