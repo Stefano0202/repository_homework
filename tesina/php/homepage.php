@@ -1,4 +1,16 @@
 <?php
+    require_once "lib/libreria.php";
+
+    // Verifico se vi e' una sessione esistente per un account attivo
+    // In caso positivo l'utente va nella sua area riservata
+    // altrimenti rimane nella homepage
+    require_once 'lib/verificaSessioneAttiva.php';
+
+    if ( $sessione_attiva )
+        header("Location: area_riservata.php");
+    else 
+        require_once 'lib/cancellaSessione.php';
+    
     echo '<?xml version = "1.0" encoding="UTF-8"?>';
 ?>
 
@@ -14,7 +26,7 @@
         <title>UNI-TECNO</title>
     </head>
 
-    <body onload="scegliSfondoCasuale();">
+    <body onload="">
         <?php
             // Import della navbar
             // Mostro il bottone per accedere alla pagina di registrazione e per quella di login
@@ -25,11 +37,12 @@
 
             // Import del frammento di accesso al catalogo
             $cat = file_get_contents("../html/frammentoAccessoCatalogo.html");
+            $cat = str_replace("%URL_SFONDO_CASUALE%", ottieniURLSfondo(), $cat);
             echo $cat . "\n";
 
-            // Import della sidebar e mostro solo le opzioni del visitatore
+            // Import della sidebar e le opzioni del visitatore
             $sidebar = file_get_contents("../html/strutturaSidebar.html");
-            $sidebar = str_replace("%OPERAZIONI_UTENTE%", "", $sidebar);
+            $sidebar = str_replace("%OPERAZIONI_UTENTE%", ottieniOpzioniMenu('V'), $sidebar);
             echo $sidebar . "\n";
         ?>
     </body>

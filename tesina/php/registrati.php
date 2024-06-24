@@ -1,45 +1,38 @@
 <?php
-    require_once 'parametriStile.php';
-
-    $margine_popup = $margine_popup_mostra;
-    $background_popup = $colore_background_popup_rosso;
-    $display_popup = $opzione_display_popup_mostra;
+    require_once 'lib/libreria.php';
+    
+    // Variabile per verificare se il popup vada mostrato
+    $mostraPopup = true;
 
     // Variabili utili all'identificazione dell'errore
     $msg = ''; $err = true;
 
-    // Import del popup per comunicare errore o meno
-    // I settings della finestra sono ottenuti preliminarmente a seconda della richiesta pervenuta
-    $popup = file_get_contents("../html/popupErrore.html");
-
-    // Verifico se l'utente è già loggato
-    session_start();
-    if (isset($_SESSION["nome"]))
-        header("Location: area_riservata.php");    // Se sì, viene ridirezionato nell'area personale
+    // Verifico se vi e' una sessione aperta per account attivo
+    require_once 'lib/verificaSessioneAttiva.php';
+    
+    if ( $sessione_attiva )
+        header("Location: area_riservata.php");
     else if( isset($_POST["nome"]) && isset($_POST["cognome"]) && isset($_POST["citta"]) 
             && isset($_POST["indirizzo"]) && isset($_POST["mail"]) && isset($_POST["username"])
-             && isset($_POST["password"])
-        )
+             && isset($_POST["password"])) // Vi e' una richiesta di registrazioone
     {   
         // Verifico che i campi siano stati riempiti
         if ( strlen(trim($_POST["nome"])) > 0 && strlen(trim($_POST["cognome"])) > 0 &&
             strlen(trim($_POST["indirizzo"])) > 0 && strlen(trim($_POST["citta"])) > 0 &&
             strlen(trim($_POST["mail"])) > 0 && strlen(trim($_POST["username"])) > 0 &&
-            strlen(trim($_POST["password"])) > 0
-        )
+            strlen(trim($_POST["password"])) > 0)
         {
             // Arrivato qui, ho la certezza che i campi non sono vuoti
-
             // Elimino la sessione appena creata erroneamente
-            require_once 'cancellaSessione.php';
+            require_once 'lib/cancellaSessione.php';
 
             // Effettuo la connessione al database
-            require_once 'connection.php';
+            require_once 'lib/connection.php';
 
             // Verifico che la connessione sia andata a buon fine
             if ( $connessione )
             {
-                $msg = '<p>Errore nell\'esecuzione della query, ricontrollare i dati</p>'; 
+                $msg = 'Errore nell\'esecuzione della query, ricontrollare i dati'; 
 
                 // Verifico che i dati siano corretti
 
@@ -65,34 +58,40 @@
                     try
                     {
                         $handleDB->query($q);
-                        $msg = '<p>Registrazione avvenuta con successo</p>';
+                        $msg = 'Registrazione avvenuta con successo';
                         $err = false;
                     }
                     catch (Exception $e)
                     {
                         $err = true;
                         if ($handleDB->errno == 1062 )
-                            $msg = '<p>e-mail o usernam gi$agrave; presente nel database</p>';
+                            $msg = 'E-mail o username gi&agrave; presente nel database';
                     }
                 }
+                else
+                    $msg = 'E-mail non valida';
 
                 // Chiusura della connessione al database
                 $handleDB->close();
             }
             else 
-                $msg = '<p>Errore di comunicazione con il database</p>';
+                $msg = 'Errore di comunicazione con il database';
         }
         else {
-            $msg = '<p> Campi vuoti </p>';   // Se qualche campo risulta vuoto, lo segnalo
+            $msg = 'Campi vuoti';   // Se qualche campo risulta vuoto, lo segnalo
         }
     }
-    else // Elimino la sessione appena creata erronamente
+    else if ( $sessione_esistente ) // Elimino la sessione esistente per l'account disattivato
     {
-        require_once 'cancellaSessione.php';
+        require_once 'lib/cancellaSessione.php';
+        $msg = 'Account disattivato. Contattare l\'admin';    
+    }
+    else
+    {
+        // Elimino la sessione appena creata erroneamente
+        require_once 'lib/cancellaSessione.php';
         $err = false;
-        
-        // Nascondo la barra per i popup
-        $popup = str_replace("%OPZIONE_DISPLAY_POPUP%", $opzione_display_popup_nascondi, $popup);
+        $mostraPopup = false;
     }
 
     echo '<?xml version = "1.0" encoding="UTF-8" ?>';
@@ -130,24 +129,9 @@
 
         <!-- FORM DI REGISTRAZIONE -->
         <div id="sezioneRegistrazione">
-            <?php
-
-                // Gestione della finestra popup
-                if ($err){
-                    $popup = str_replace("%CONTENUTO_FINESTRA_POPUP%", $msg, $popup);
-                    $popup = str_replace("%OPZIONE_DISPLAY_POPUP%", $display_popup, $popup);
-                    $popup = str_replace("%MARGINE_DESTRO_POPUP%", $margine_popup, $popup);
-                    $popup = str_replace("%COLORE_SFONDO_POPUP%", $background_popup, $popup);
-                    echo $popup . "\n";
-                }
-                else
-                {
-                    $popup = str_replace("%CONTENUTO_FINESTRA_POPUP%", $msg, $popup);
-                    $popup = str_replace("%OPZIONE_DISPLAY_POPUP%", $display_popup, $popup);
-                    $popup = str_replace("%MARGINE_DESTRO_POPUP%", $margine_popup, $popup);
-                    $popup = str_replace("%COLORE_SFONDO_POPUP%", $colore_background_popup_verde, $popup);
-                    echo $popup . "\n";
-                }
+            <?php 
+                // Stampo il popup se necessario
+                echo creaPopup($mostraPopup, $msg, $err) . "\n";
             ?>
 
             <form id="formRegistrazione" method="post" action="<?php echo $_SERVER["PHP_SELF"] ?>">

@@ -4,7 +4,8 @@ html, body
     background-color: #E4F9F5;
     font-family: Arial, Verdana, Helvetica;
     height: 100%;
-    width: 100%;    
+    width: 100%;
+    overflow: hidden;
 }
 
 fieldset
@@ -42,7 +43,8 @@ button:hover, input[type="submit"]:hover, input[type="reset"]:hover
     height: 15%;
     background-color: #11999E;
     align-items: center;
-    box-shadow: 21px 27px 31px -2px black;
+    box-shadow: 21px 18px 31px -2px black;
+    overflow: hidden;
 }
 
 .navbar div
