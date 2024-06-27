@@ -4,6 +4,39 @@
     require_once 'gestoriXML/gestoreDomande.php';
     require_once 'gestoriXML/gestoreRisposte.php';
 
+    // Inizializzazione variabili per gestione popup
+    $mostraPopup = false; $err = false; $msg = "";
+
+    // Verifico che vi sia una sessione attiva per un utente admin o gestore
+    // altrimenti ridireziono sulla homepage
+    if (!( $sessione_attiva && ($_SESSION["ruolo"] == 'A' || $_SESSION["ruolo"] == 'G') ))
+        header("Location: homepage.php");
+    else if ( isset($_POST["domanda"]) && isset($_POST["risposta"]) ) // Verifico se vi sia una richiesta di inserimento nuova faq
+    {
+        // Devo mostrare l'esito della richiesta
+        $mostraPopup = true; $err = true; $msg = 'Campi vuoti';
+        
+        // Effettuo il controllo sui campi
+        $domanda = trim($_POST["domanda"]);
+        $risposta = trim($_POST["risposta"]);
+        if ( strlen($domanda) > 0 && strlen($risposta) > 0 )
+        {
+            // Procedo all'inserimento della domanda e della risposta
+            // impostando entrambi da visualizzare nelle faq
+            $gestore_domande = new GestoreDomande();
+            $gestore_risposte = new GestoreRisposte();
+            $id_domanda = $gestore_domande->inserisciDomanda($domanda, $_SESSION["id_utente"], "true");
+            if ( $id_domanda != null )
+            {
+                $gestore_risposte->inserisciRisposta($risposta, $_SESSION["id_utente"], "true", $id_domanda);
+                $err = false;
+                $msg = 'Inserimento FAQ avvenuto con successo';
+            }
+            else // Errore generico causato dai file XML
+                $msg = "Errore nell'inserimento della FAQ";
+        }
+    }
+
     // Verifico se c'e' da gestire una richiesta di registrazione o meno
     echo '<?xml version = "1.0" encoding="UTF-8"?>';
 ?>
@@ -15,6 +48,7 @@
         <link rel="stylesheet" href="../css/stileLayout.css" type="text/css" />
         <link rel="stylesheet" href="../css/stileSidebar.css" type="text/css" />
         <link rel="stylesheet" href="../css/stileInserisciFaq.css" type="text/css" />
+        <link rel="stylesheet" href="../css/stilePopup.css" type="text/css" />
         <link rel="icon" type="image/x-icon" href="../img/logo.png" />
         <script type="text/javascript" src="../js/utility.js"></script>
         <title>UNI-TECNO</title>
@@ -63,22 +97,24 @@
         ?>
 
         <div id="sezioneForm">
-            <form id="parteCentrale">
-
-            <fieldset>
-                <p>Domanda:</p>
-                <textarea name="domanda"> </textarea>
-            </fieldset>
-
-            <fieldset>
-                <p>Risposta:</p>
-                <textarea name="risposta"> </textarea>
-            </fieldset>
-                
-            <div class="parteButton">
-                    <input type="submit" value="Invia" name="btnInvia" />
-            </div>
-
+            <?php 
+                // Stampo il popup se necessario
+                echo creaPopup($mostraPopup, $msg, $err) . "\n";
+            ?>
+            
+            <form id="parteCentrale" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+                <fieldset>
+                    <p>Domanda:</p>
+                    <textarea name="domanda"><?php if($err) echo $domanda;?></textarea>
+                </fieldset>
+                <fieldset>
+                    <p>Risposta:</p>
+                    <textarea name="risposta"><?php if($err) echo $risposta;?></textarea>
+                </fieldset>
+                    
+                <div class="parteButton">
+                        <input type="submit" value="Invia" name="btnInvia" />
+                </div>
             </form>
         </div>
     </body>
