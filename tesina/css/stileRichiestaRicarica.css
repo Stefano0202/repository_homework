@@ -3,26 +3,55 @@
     width: 100%;
     height: 85%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
     overflow: auto;
 }
 
+#sezionePopup
+{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
 #parteCentrale
 {
-    max-height: 85%;
+    display: flex;
+    width: 100%;
+    height: 85%;
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#parteCentrale form
+{
+    width: 45%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
     border-style: solid;
     background-color: #11999E;
     box-shadow: 21px 27px 31px -2px black;
-    color:white;
+    color: white;
     border-radius: 15px;
     padding: 30px;
     font-size: 150%;
+    justify-content: center;
+}
+
+#parteCentrale fieldset
+{
+    display: flex;
+    gap: 60px;
+    align-items: center;
+}
+
+fieldset select
+{
+    font-size: 100%;
+    padding: 10px;
 }
 
 .parteButton
@@ -36,7 +65,3 @@
     margin:4px;
 }
 
-textarea
-{
-    font-size: 130%;
-}

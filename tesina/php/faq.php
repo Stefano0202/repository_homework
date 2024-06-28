@@ -37,7 +37,7 @@
                 $nav = str_replace("%NOME_UTENTE%", $_SESSION["nome"] . " " . $_SESSION["cognome"], $nav);
                 echo $nav ."\n";
 
-                // Import della sidebar e mostro solo le opzioni del visitatore
+                // Import della sidebar
                 $sidebar = file_get_contents("../html/strutturaSidebar.html");
                 $sidebar = str_replace("%OPERAZIONI_UTENTE%", ottieniOpzioniMenu($_SESSION["ruolo"]), $sidebar);
                 echo $sidebar . "\n";
@@ -64,7 +64,7 @@
 
         <div id="sezioneFaq">
             <div id="parteCentrale">
-                <form class="parteButton" action="inserisciFaq.php" method="POST">
+                <form class="parteButton" action="inserisciFaq.php" method="post">
                     <div style="display: <?php echo $visibilita_bottone; ?>">
                         <input type="submit" value="Inserisci nuova FAQ" name="btnInserisci" />
                     </div>

@@ -2,15 +2,15 @@
     require_once "lib/libreria.php";
 
     // Verifico se vi e' una sessione esistente per un account attivo
-    // In caso positivo l'utente va nella sua area riservata
-    // altrimenti rimane nella homepage
+    // In caso positivo l'utente rimane nella sua area riservata
+    // altrimenti viene reindirizzato alla homepage
     require_once 'lib/verificaSessioneAttiva.php';
-
-    if ( $sessione_attiva )
-        header("Location: areaRiservata.php");
-    else 
+    if ( !$sessione_attiva )
+    {
         require_once 'lib/cancellaSessione.php';
-    
+        header("Location: homepage.php");
+    }
+        
     echo '<?xml version = "1.0" encoding="UTF-8"?>';
 ?>
 
@@ -27,22 +27,21 @@
     </head>
 
     <body onload="">
-        <?php
+        <?php 
             // Import della navbar
-            // Mostro il bottone per accedere alla pagina di registrazione e per quella di login
-            $nav = file_get_contents("../html/strutturaNavbarVisitatori.html");
-            $nav = str_replace("%OPZIONE_DISPLAY_REGISTRATI%", "block", $nav);
-            $nav = str_replace("%OPZIONE_DISPLAY_ACCEDI%", "block", $nav);
+            $nav = file_get_contents("../html/strutturaNavbarUtenti.html");
+            $nav = str_replace("%NOME_UTENTE%", $_SESSION["nome"] . " " . $_SESSION["cognome"], $nav);
             echo $nav ."\n";
-
+            
             // Import del frammento di accesso al catalogo
             $cat = file_get_contents("../html/frammentoAccessoCatalogo.html");
             $cat = str_replace("%URL_SFONDO_CASUALE%", ottieniURLSfondo(), $cat);
             echo $cat . "\n";
 
-            // Import della sidebar e le opzioni del visitatore
+            // Import della sidebar e mostro le opzioni per l'utente loggato
+            // Il ruolo dell'utente e' prelevato dalle variabili di sessione
             $sidebar = file_get_contents("../html/strutturaSidebar.html");
-            $sidebar = str_replace("%OPERAZIONI_UTENTE%", ottieniOpzioniMenu('V'), $sidebar);
+            $sidebar = str_replace("%OPERAZIONI_UTENTE%", ottieniOpzioniMenu($_SESSION["ruolo"]), $sidebar);
             echo $sidebar . "\n";
         ?>
     </body>

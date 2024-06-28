@@ -53,7 +53,32 @@
                 $id = $figli[$i]->getAttribute("id");
                 if ( $id == $id_domanda )
                 {
-                    $domanda = $figli[$i];
+                    // Creo una nuova domanda
+                    $domanda = new Domanda();
+
+                    // Estraggo le informazioni dalla domanda
+                    $domanda->id = $figli[$i]->getAttribute("id");
+                    $domanda->data = $figli[$i]->getAttribute("data");
+                    $domanda->id_utente = $figli[$i]->getAttribute("id_utente");
+                    $domanda->contenuto = $figli[$i]->firstChild->textContent;
+                    
+                    // Estraggo le valutazioni dalla domanda
+                    $lista_valutazioni = [];
+                    $valutazioni = $figli[$i]->lastChild->childNodes;
+                    $n_valutazioni = $valutazioni->length;
+                    for ( $j=0; $j<$n_valutazioni; $j++ )
+                    {
+                        $nuova_valutazione = new ValutazioneDomanda();
+                        $nuova_valutazione->peso = $valutazioni[$j]->getAttribute('peso');
+                        $nuova_valutazione->rating = $valutazioni[$j]->getAttribute('rating');
+
+                        // Aggiungo la valutazione alla lista delle valutazioni
+                        array_push($lista_valutazioni, $nuova_valutazione);
+                    }
+
+                    // Aggiungo la lista delle valutazioni alla domanda
+                    $domanda->valutazioni = $lista_valutazioni;
+
                     $esito = true;
                 }
             }
@@ -161,5 +186,5 @@
 
             return $id_nuova_domanda;
         }
-    } 
+    }
 ?>
