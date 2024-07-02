@@ -143,3 +143,30 @@ function inserisciValutazione(id_intervento, stella_premuta)
     alert("La valutazione e' sull'intervento con id:" + id_intervento_xml + " che e' una " + tipo_intervento);
     alert("Rating: " + stella_premuta);
 }
+
+function vaiDettaglioUtente(container)
+{
+    // Tramite il container accedo al form nascosto al suo interno
+    // 3 figlio
+    form = container.children[2];
+
+    // Eseguo il submit del form
+    form.submit();
+}
+
+function azzeraRicercaClienti()
+{
+    // Riferimento al form
+    form = document.getElementById('ricercaClienti');
+
+    // Azzero i campi
+    checkboxAttivi = document.getElementsByName('attivi')[0];
+    checkboxBannati = document.getElementsByName('bannati')[0];
+    contenutoRic = document.getElementsByName('contenutoRicerca')[0];
+    checkboxAttivi.checked = '';
+    checkboxBannati.checked = '';
+    contenutoRic.innerHTML = '';
+
+    // Refresh della pagina
+    form.submit();
+}

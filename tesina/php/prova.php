@@ -1,24 +1,7 @@
 <?php
-    require 'gestoriXML/gestoreDomande.php';
-    require 'gestoriXML/gestoreRisposte.php';
+    require 'lib/libreriaDB.php';
+    require 'lib/connection.php';
 
-    $g1 = new GestoreRisposte();
-    $g = new GestoreDomande();
-
-    /*$dom = $g->ottieniDomanda('1');
-    $cont = $dom->firstChild->textContent;
-    echo $cont;*/
-
-    $e = $g1->verificaPresenzaRispostaFaq('1');
-    if($e){
-        echo "presente";
-    }
-    else 
-        echo "assente";
-    $e = $g1->verificaPresenzaRispostaFaq('9');
-    if($e){
-        echo "presente";
-    }
-    else 
-        echo "assente";
+    $lista = ottieniClienti($handleDB, false, false, 're');
+    var_dump($lista);
 ?>

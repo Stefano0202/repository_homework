@@ -1,0 +1,137 @@
+#sezioneClienti
+{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5%;
+    padding-bottom: 50px;
+}
+
+#parteControlli
+{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#parteTessere
+{
+    width: 90%;
+    overflow: auto;
+    border-style: solid;
+    background-color: #11999E;
+    box-shadow: 21px 27px 31px -2px black;
+    color:white;
+    gap: 50px;
+    padding: 20px;   
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#parteTessere > p
+{
+    font-size: 150%;
+}
+
+#parteControlli form
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-style: solid;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 170%;
+    background-color: #11999E;
+    box-shadow: 21px 27px 31px -2px black;
+    color:white;
+    border-radius: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+fieldset
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    flex: 2.5;
+}
+
+fieldset:nth-child(3)
+{
+    flex: 10;
+}
+
+fieldset input[type="text"]
+{
+    width: 100%;
+    font-size: 100%;
+    text-align: center;
+}
+
+fieldset input[type="checkbox"]
+{
+    width: 25px;
+    height: 25px;
+}
+
+.tesseraUtente
+{
+    display: flex;
+    flex-direction: column;
+    font-size: 180%;
+    height: 250px;
+    border-style: solid;
+    background-color: #11999E;
+    box-shadow: 21px 27px 31px -2px black;
+    color:white;
+    border-radius: 15px;
+    overflow: auto;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.tesseraUtente > div
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.tesseraUtente:hover
+{
+    background-color: #30E3CA;
+    cursor: pointer;
+    color: black;
+}
+
+.tesseraUtente > div:nth-child(2)
+{
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+.tesseraUtente > div:nth-child(2) > p
+{
+    flex: 1;
+    text-align: center;
+    font-size: 80%;
+}
+
+.tesseraUtente form
+{
+    display: none;
+}
