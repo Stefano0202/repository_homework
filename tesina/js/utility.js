@@ -123,27 +123,6 @@ function decoloraStelline(nome_stelle, colore_reset)
     }
 }
 
-function inserisciValutazione(id_intervento, stella_premuta)
-{
-    // Prelevo il riferimento all'intervento nella pagina per ottenere
-    // l'id dell'intervento nei file XML e il tipo di intervento
-    intervento = document.getElementById(id_intervento);
-    id_intervento_xml = intervento.children[3].innerHTML;
-    tipo_intervento = intervento.children[4].innerHTML;
-    
-    // Prelevo le informazioni dell'utente che effettua la valutazione nascoste nella pagina
-    id_utente = document.getElementById('id_utente').innerHTML;
-    reputazione_utente = document.getElementById('reputazione_utente').innerHTML;
-
-    // Eseguo l'inserimento della valutazione in modalita' asincrona
-    
-    // Refresh della pagina
-
-    alert("Valutazione effettuata dall'utente: " + id_utente + " con reputazione: " + reputazione_utente);
-    alert("La valutazione e' sull'intervento con id:" + id_intervento_xml + " che e' una " + tipo_intervento);
-    alert("Rating: " + stella_premuta);
-}
-
 function vaiDettaglioUtente(container)
 {
     // Tramite il container accedo al form nascosto al suo interno
@@ -168,5 +147,92 @@ function azzeraRicercaClienti()
     contenutoRic.innerHTML = '';
 
     // Refresh della pagina
+    form.submit();
+}
+
+function inserisciValutazione(id_intervento, stella_premuta)
+{
+    // Prelevo il riferimento all'intervento nella pagina per ottenere
+    // l'id dell'intervento nei file XML e il tipo di intervento
+    intervento = document.getElementById(id_intervento);
+    id_intervento_xml = intervento.children[3].innerHTML;
+    tipo_intervento = intervento.children[4].innerHTML;
+    
+    // Prelevo le informazioni dell'utente che effettua la valutazione nascoste nella pagina
+    id_utente = document.getElementById('id_utente').innerHTML;
+    reputazione_utente = document.getElementById('reputazione_utente').innerHTML;
+
+    // Eseguo l'inserimento della valutazione in modalita' asincrona
+    // Compongo la query string da passare allo script
+    query_string = "id_utente=" + id_utente + "&reputazione_utente=" + reputazione_utente
+                            + "&id_intervento_xml=" + id_intervento_xml + "&tipo_intervento=" + tipo_intervento
+                            + "&stella_premuta=" + stella_premuta;
+    
+    // Oggetto per connessione mediante tecnologia AJAX
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", "inserisciValutazione.php");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function(){ callbackValutazione(xhr) }; // Definisco una funzione di callback implicita che chiama quella sotto
+    xhr.send(query_string);
+}
+
+function callbackValutazione(xhr)
+{
+    // Ricevo vero o falso a seconda della riuscita dell'operazione
+    // In caso di errore emetto un alert per notificarlo
+    if ( !xhr.responseText )
+        alert("Inserimento valutazione fallito");
+    
+    // A prescindere si effettua il refresh della pagina
+    location.reload();
+}
+
+function cambiaStatoAccount(operazione, id_utente)
+{
+    // Operazione 1=ban 2=id_utente
+    // Compongo la query string da passare allo script
+    query_string = "id_utente=" + id_utente + "&operazione=" + operazione;
+                            
+    // Oggetto per connessione mediante tecnologia AJAX
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", "lib/cambiaStatoCliente.php");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function(){ callbackCambiaStatoAccount(xhr) }; // Definisco una funzione di callback implicita che chiama quella sotto
+    xhr.send(query_string);
+}
+
+function callbackCambiaStatoAccount(xhr)
+{
+    // Ricevo vero o falso a seconda della riuscita dell'operazione
+    // Notifica tramite alert in caso di errore
+    if ( !xhr.responseText )
+        alert("Cambio stato fallito");
+    
+    // Per effettuare il refresh della pagina effettuo il submit del form
+    // che contiene il bottone per ban/riattivazione account.
+    // Cambio l'azione e imposto lo script dettaglioCliente.php in modo da ricaricare
+    // la pagina.
+    // Meccanismo implementato cosi per evitare la richiesta di alcuni browser 
+    // di reinviare la richiesta POST (es. Firefox)
+    form = document.getElementById('formOpzioni');
+    form.action = 'dettaglioCliente.php';
+    form.submit();
+}
+
+function tornaIndietroDallaModificaCliente(ruolo)
+{
+    // A seconda del ruolo scelgo in modo opportuno l'azione del form
+    // che corrisponde alla pagina su cui tornare dalla pagina di modifica
+    // del cliente
+    if ( ruolo == 'A' )
+        pagina_precedente = 'dettaglioCliente.php';
+    else if ( ruolo == 'C' )
+        pagina_precedente = 'areaPersonale.php';
+
+    // Prendo il riferimento al form
+    form = document.getElementById('formModifica');
+    form.action = pagina_precedente;
+
+    // Eseguo il submit del form per tornare indietro
     form.submit();
 }

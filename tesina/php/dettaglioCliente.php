@@ -3,6 +3,7 @@
     require_once 'lib/libreriaDB.php';
     require_once 'lib/verificaSessioneAttiva.php';
     require_once 'lib/parametriStile.php';
+    require_once 'gestoriXML/gestorePortafogliBonus.php';
 
     // A questa pagina possono accedervi solo gli admin e i gestori
     // I gestori, pero', possono solo consultare la pagina
@@ -34,6 +35,10 @@
         // Se l'account non appartiene ad un cliente, ridireziono sulla homepage
         if( $cliente->id_utente == "" || $cliente->ruolo != "C")
             header("Location: homepage.php");
+
+        // Prelevo dal file xml il saldo del portafoglio bonus
+        $gestore_portafogli_bonus = new GestorePortafogliBonus();
+        $saldo_bonus = $gestore_portafogli_bonus->ottieniSaldoPortafoglioBonus($cliente->id_utente);
             
         $handleDB->close();
     }
@@ -107,7 +112,7 @@
                                 <strong> <span> <?php echo $cliente->saldo_standard;?> </span> </strong>
                             </p>
                             <p>Saldo portafoglio bonus: 
-                                <strong> <span> <?php echo $cliente->saldo_standard;?> </span> </strong>
+                                <strong> <span> <?php echo $saldo_bonus;?> </span> </strong>
                             </p>
                         </div>
                     </div>
@@ -124,16 +129,20 @@
                     </div>
 
                     <div class="riquadro" >
-                        <form action="" method="post" style="<?php echo $visibilita_bottone; ?>">
+                        <form id="formOpzioni" action="modificaCliente.php" method="post" style="<?php echo $visibilita_bottone; ?>">
                             <fieldset>
                             <?php 
+                                // Questi bottoni non effettuano il submit del form
+                                // Alla funzione di onclick passano 1 per eseguire il ban o altrimenti 2 per eseguire la riattivazione dell'account
+                                // e l'id dell'utente su cui effettuare l'operazione
                                 if($stato == "ATTIVO")
-                                    echo "<input type=\"submit\" value=\"Ban account\" name=\"btnBan\" />" ."\n";
+                                    echo "<input type=\"button\" onclick=\"cambiaStatoAccount(1,$id_cliente);\" value=\"Ban account\" name=\"btnBan\" />" ."\n";
                                 else
-                                    echo "<input type=\"submit\" value=\"Riattiva account\" name=\"btnRiattiva\" />" ."\n";
+                                    echo "<input type=\"button\" onclick=\"cambiaStatoAccount(2,$id_cliente);\" value=\"Riattiva account\" name=\"btnRiattiva\" />" ."\n";
                             ?>
+                            <input type="hidden" value="<?php echo $id_cliente; ?>" name="id_cliente" />
+                            <input type="submit" value="Modifica dati" name="btnModifica" />
                             </fieldset>
-                            <fieldset><input type="submit" value="Modifica dati" name="btnModifica" /></fieldset>
                         </form>
                         <form action="gestioneClienti.php" method="post">
                             <fieldset><input type="submit" value="Indietro &#8617;" name="btnIndietro" /></fieldset>

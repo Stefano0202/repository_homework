@@ -1,7 +1,7 @@
 <?php
-    require 'lib/libreriaDB.php';
-    require 'lib/connection.php';
+    require 'gestoriXML/gestoreDomande.php';
 
-    $lista = ottieniClienti($handleDB, false, false, 're');
-    var_dump($lista);
+    $g = new GestoreDomande();
+
+    $g->inserisciNuovaValutazione(2, 4, 150, 3);
 ?>

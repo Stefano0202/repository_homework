@@ -130,4 +130,85 @@
 
         return $lista_utenti;
     }
+
+    // Funzione per incrementare il saldo standard del portafoglio di un cliente
+    function incrementaSaldoStandard($handleDB, $id_utente, $incremento)
+    {
+        global $tb_utenti;
+        
+        // Creo la query per ottenere il saldo standard corrente
+        $q_saldo = "select saldo_standard from $tb_utenti where id=" . $id_utente;
+
+        // Esecuzione della query
+        try
+        {
+            // Eseguo la query per il saldo
+            $rs = $handleDB->query($q_saldo);
+
+            if ( $riga = $rs->fetch_row() )  // Se ho trovato una corrispondenza continuo con la computazione
+            {
+                $saldo_corrente = floatval($riga[0]);
+
+                // Calcolo il nuovo saldo
+                $nuovo_saldo = $saldo_corrente + floatval($incremento);
+                $nuovo_saldo = strval($nuovo_saldo);
+
+                // Query per aggiornare il saldo
+                $q_saldo = "update $tb_utenti set saldo_standard=$nuovo_saldo where id=$id_utente";
+
+                // Eseguo la query
+                $handleDB->query($q_saldo);
+            }
+            
+            $rs->close();
+        }
+        catch (Exception $e){}
+    }
+
+    // Funzione per cambiare lo stato dell'account di un cliente
+    function cambiaStato($handleDB, $id_utente, $nuovo_stato)
+    {
+        global $tb_utenti;
+        $esito = false;
+
+        // Se ricevo uno stato nullo o non valido l'operazione fallisce
+        if ( $nuovo_stato == "" || ($nuovo_stato != 'B' && $nuovo_stato != 'A') )
+            return $esito;
+
+        // Creo la query per cambiare lo stato
+        $q = "update $tb_utenti set stato='$nuovo_stato' where id=$id_utente and ruolo='C'";
+
+        // Esecuzione della query
+        try
+        {
+            // Eseguo la query
+            $esito = $handleDB->query($q);
+        }
+        catch (Exception $e){}
+
+        return $esito;
+    }
+
+    // Funzione per cambiare i dati di un cliente
+    function modificaCliente($handleDB, $id_cliente, $nome, $cognome, $citta, $cap, $indirizzo, $reputazione, $ruolo_modificatore)
+    {
+        global $tb_utenti;
+        $esito = false;
+
+        // Creo la query per aggiornare i dati. Considero la reputazione se il modificatore e' admin
+        if ( $ruolo_modificatore == 'A' )
+            $q = "update $tb_utenti set nome='$nome', cognome='$cognome', citta='$citta', cap='$cap', indirizzo='$indirizzo', reputazione=$reputazione where id=$id_cliente and ruolo='C'";
+        else
+            $q = "update $tb_utenti set nome='$nome', cognome='$cognome', citta='$citta', cap='$cap', indirizzo='$indirizzo' where id=$id_cliente and ruolo='C'";
+
+        // Esecuzione della query
+        try
+        {
+            // Eseguo la query
+            $esito = $handleDB->query($q);
+        }
+        catch (Exception $e){}
+
+        return $esito;
+    }
 ?>
