@@ -9,6 +9,7 @@
         public $id_utente;
         public $contenuto;
         public $valutazioni;
+        public $faq;
     }
 
     class ValutazioneDomanda
@@ -62,6 +63,7 @@
                     $domanda->id = $figli[$i]->getAttribute("id");
                     $domanda->data = $figli[$i]->getAttribute("data");
                     $domanda->id_utente = $figli[$i]->getAttribute("id_utente");
+                    $domanda->faq = $figli[$i]->getAttribute("faq");
                     $domanda->contenuto = $figli[$i]->firstChild->textContent;
                     
                     // Estraggo le valutazioni dalla domanda
@@ -121,6 +123,7 @@
                     $nuova_domanda->data = $figli[$i]->getAttribute("data");
                     $nuova_domanda->id_utente = $figli[$i]->getAttribute("id_utente");
                     $nuova_domanda->contenuto = $figli[$i]->firstChild->textContent;
+                    $nuova_domanda->faq = $f;
                     
                     // Estraggo le valutazioni dalla domanda
                     $lista_valutazioni = [];
@@ -309,6 +312,39 @@
                     
                     $this->salvaXML($this->pathname);
                     $esito = true;
+                }
+            }
+
+            return $esito;
+        }
+
+        // Metodo per elevare una domanda a FAQ
+        function elevaDomanda($id_domanda)
+        {
+            // Verifico se posso usare il file
+            if ( !$this->checkValidita() )
+                return false;
+
+            // Variabile per ottimizzare il ciclo
+            $esito = false;
+
+            // Ottengo la lista di figli della radice, ovvero la lista delle domande
+            $figli = $this->oggettoDOM->documentElement->childNodes;
+            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+
+            // Per ogni figlio, ovvero una domanda, verifico se l'id
+            // corrisponde a quello passato come parametro
+            for ( $i=0; $i<$n_figli && !$esito; $i++ )
+            {
+                // Verifico se l'id della domanda corrisponde
+                // a quello passato
+                $id = $figli[$i]->getAttribute("id");
+                if ( $id == $id_domanda )
+                {
+                    // Elevo la domanda a FAQ
+                    $figli[$i]->setAttribute('faq', 'true');
+                    $esito = true;
+                    $this->salvaXML($this->pathname);
                 }
             }
 
