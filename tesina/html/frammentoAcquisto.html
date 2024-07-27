@@ -1,9 +1,11 @@
-<fieldset>
-    <div class="acquisto" name="%ID_ACQUISTO%" onclick="vaiDettaglioAcquisto('%ID_ACQUISTO%')">
+<div class="acquisto" onclick="vaiDettaglioAcquisto(this)">
         <p> 
             <span> <span>Data acquisto: </span>%DATA%</span> 
-            <span> <span>Crediti bonus ricevuti: </span>%CREDITI_BONUS_RICEVUTI%</span> 
+            <span> <span>Crediti bonus ricevuti: </span>%CREDITI_BONUS_RICEVUTI%</span>
+            <span> <span>Crediti bonus utilizzati: </span>%CREDITI_BONUS_UTILIZZATI%</span>
             <span> <span>Totale acquisto: </span>%CREDITI_SPESI%</span> 
         </p>
-    </div>
-</fieldset>
+        <form style="display: none;" action="dettaglioAcquisto.php" method="post">
+            <fieldset style="display: none;"><input type="hidden" name="id_acquisto" value="%ID_ACQUISTO%" /></fieldset>
+        </form>
+</div>

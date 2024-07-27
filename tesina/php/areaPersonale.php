@@ -102,7 +102,6 @@
 
             <div class="riquadroAcquisti" >
                 <h4 style="text-decoration: underlined;">Acquisti effettuati</h4>
-                <form id="acquisti" action="dettaglioAcquisto.php" method="post">
                 <?php
                     // Contenuto di un acquisto vuoto
                     $acquisto_vuoto = file_get_contents("../html/frammentoAcquisto.html");
@@ -117,28 +116,25 @@
                     $dim_lista = count($lista_acquisti);
 
                     if($dim_lista == 0)
-                        echo "<p style=\"font-size: 100%;\"> Nessun acquisto effettuato </p>";
+                        echo "<p style=\"font-size: 130%; color: white;\"> Nessun acquisto effettuato </p>";
 
                     for ( $i=0; $i<$dim_lista; $i++ )
                     {
-                        $id_acquisto = $lista_acquisti[$i]->id;
+                        $id_acquisto = $lista_acquisti[$dim_lista - 1 - $i]->id;
 
-                        $tot = calcolaTotaleAcquisto($id_acquisto);
-                        
-                        $acquisto_pieno = str_replace("%DATA%", date("d-m-Y", strtotime($lista_acquisti[$i]->data)), $acquisto_vuoto);
-                        $acquisto_pieno = str_replace("%CREDITI_BONUS_RICEVUTI%", $lista_acquisti[$i]->crediti_bonus_ricevuti, $acquisto_pieno);
-                        $acquisto_pieno = str_replace("%CREDITI_SPESI%", $tot, $acquisto_pieno);
-
-                        $acquisto_pieno = str_replace("%ID_ACQUISTO%", $lista_acquisti[$i]->id, $acquisto_pieno);
+                        $acquisto_pieno = str_replace("%DATA%", date("d-m-Y", strtotime($lista_acquisti[$dim_lista - 1 - $i]->data)), $acquisto_vuoto);
+                        $acquisto_pieno = str_replace("%CREDITI_BONUS_RICEVUTI%", $lista_acquisti[$dim_lista - 1 - $i]->crediti_bonus_ricevuti, $acquisto_pieno);
+                        $acquisto_pieno = str_replace("%CREDITI_BONUS_UTILIZZATI%", $lista_acquisti[$dim_lista - 1 - $i]->crediti_bonus_utilizzati, $acquisto_pieno);
+                        $acquisto_pieno = str_replace("%CREDITI_SPESI%", $lista_acquisti[$dim_lista - 1 - $i]->totale_effettivo, $acquisto_pieno);
+                        $acquisto_pieno = str_replace("%ID_ACQUISTO%", $id_acquisto, $acquisto_pieno);
 
                         // Popoliamo ora la parte relativa ai prodotti
                         $dettaglio_acquisti .= $acquisto_pieno . "\n";
                     }
                         
-                        // Mostro la lista delle domande
+                        // Mostro la lista degli acquisti
                         echo $dettaglio_acquisti . "\n";
                     ?>
-                    <php>
 
             </div>
             

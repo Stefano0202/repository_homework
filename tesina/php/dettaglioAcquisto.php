@@ -3,23 +3,18 @@
     require_once 'lib/verificaSessioneAttiva.php';
     require_once 'lib/libreriaDB.php';
     require_once 'gestoriXML/gestoreAcquisti.php';
+    require_once 'gestoriXML/gestoreCatalogoProdotti.php';
 
     // Recupero l'id dell'acquisto per poterlo individuare nel file xml
-    //$id_acquisto = null;
-
-    // Per ora lo imposto ad un dato  valore
-    $id_acquisto = 3;
+    $id_acquisto = null;
 
     // Bisogna controllare che l'utente sia attivo e che sia un cliente
     if ( $sessione_attiva && $_SESSION["ruolo"] == 'C'  )
     {
         // Gestore per acquisti
         $gestore_acquisti = new GestoreAcquisti();
-
-        //$id_acquisto = $_POST["id_acquisto"];
-
-        $acquisto = new Acquisto();
-
+        $id_acquisto = $_POST["id_acquisto"];
+        
         // Popolo la struttura dell'acquisto
         $acquisto = $gestore_acquisti->ottieniAcquisto($id_acquisto);
 
@@ -66,31 +61,38 @@
         ?>
 
         <div id="sezioneCentrale">
-            <div class="acquisto" name="%ID_ACQUISTO%" onclick="vaiDettaglioAcquisto('%ID_ACQUISTO%')">
+            <div class="acquisto">
                 <p> 
                     <span> <span>Data acquisto: </span><?php echo date('d-m-Y', strtotime($acquisto->data));?></span> 
+                    <span> <span>Indirizzo consegna: </span><?php echo $acquisto->indirizzo_consegna;?></span>
                     <span> <span>Crediti bonus ricevuti: </span><?php echo $acquisto->crediti_bonus_ricevuti;?></span> 
-                    <span> <span>Totale acquisto: </span><?php echo calcolaTotaleAcquisto($id_acquisto)?></span> 
+                    <span> <span>Crediti bonus utilizzati: </span><?php echo $acquisto->crediti_bonus_utilizzati;?></span> 
+                    <span> <span>Totale acquisto: </span><?php echo $acquisto->totale_effettivo;?></span> 
                 </p>
             </div>
 
             <div id="sezioneProdotti">
                 <?php
+                    // Allocazione gestore catalogo prodotti
+                    $gestore_catalogo = new GestoreCatalogoProdotti();
+                    
                     // Salvo il numero di prodotti presenti nell'acquisto
                     $n_prodotti = count($lista_prodotti);
-
+                    $lista_html = "<ul>\n";
                     for ($i=0; $i < $n_prodotti; $i++)
                     {
-                        echo "<p><span><span>ID PER PROVA: </span>" . $lista_prodotti[$i]->id_prodotto . 
-                         "</span><span><span>PREZZO PER PROVA: </span>" . $lista_prodotti[$i]->prezzo . "</span></p>";
+                        // Ottengo il prodotto
+                        $prodotto = $gestore_catalogo->ottieniProdotto($lista_prodotti[$i]->id_prodotto);
+                        
+                        // Per ogni prodotto creo un elemento della lista
+                        $prezzo_acq = $lista_prodotti[$i]->prezzo;
+                        $nuovo = "<li><p><span><span>Nome prodotto: </span><span>$prodotto->nome</span></span>\n<span><span>Prezzo di listino: </span><span>$prodotto->prezzo_listino". 
+                                            "</span></span>\n<span><span>Prezzo di acquisto: </span><span>$prezzo_acq</span></span></p></li>\n";
+                        $lista_html .= $nuovo;
                     }
-
+                    $lista_html .= '</ul>' . "\n";
+                    echo $lista_html . "\n";
                 ?>
-                <p> CIAO </p>
-                <p> CIAO </p>
-                <p> CIAO </p>
-                <p> CIAO </p>
-                <!-- IMPLEMENTARE IL GESTORE DEI PRODOTTI E RISOLVERE IL PROBLEMA ID ACQUISTO POST -->
             </div>
         </div>
     </body>

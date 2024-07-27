@@ -39,7 +39,7 @@
             // Ottengo la lista dei risposte
             $lista_risposte = [];
             $risposte = $this->oggettoDOM->documentElement->childNodes;
-            $n_risposte = $this->oggettoDOM->documentElement->childElementCount;
+            $n_risposte = count($risposte);
 
             // Scansiono le risposte e filtro solo quelle relative alla domanda
             for ( $i=0; $i<$n_risposte; $i++ )
@@ -70,6 +70,7 @@
                         $nuova_valutazione = new ValutazioneRisposta();
                         $nuova_valutazione->peso = $valutazioni[$j]->getAttribute('peso');
                         $nuova_valutazione->rating = $valutazioni[$j]->getAttribute('rating');
+                        $nuova_valutazione->id_utente = $valutazioni[$j]->getAttribute('id_utente');
 
                         // Aggiungo la valutazione alla lista delle valutazioni
                         array_push($lista_valutazioni, $nuova_valutazione);
@@ -102,7 +103,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle risposte
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una risposta, verifico se l'id
             // corrisponde a quello passato come parametro
@@ -158,7 +159,8 @@
 
             // Ottengo l'id dell'ultimo figlio della radice, ovvero dell'ultima risposta
             $id_nuova_risposta = 1;
-            $ultima = $this->oggettoDOM->documentElement->lastElementChild;
+            $figli = $this->oggettoDOM->documentElement->childNodes;
+            $ultima = $figli[count($figli) - 1];
             if ( $ultima != null ) // Ci sono altre domande
             {
                 $id_ultima = $ultima->getAttribute('id');
@@ -265,7 +267,7 @@
             
             // Ottengo la lista di figli della radice, ovvero la lista delle risposte
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
             for ( $i=0; $i<$n_figli && !$trovata; $i++ )
             {
                 // Verifico se ho raggiunto la risposta
@@ -279,7 +281,7 @@
                 $i--;
 
                 // Verifico che non vi sia una valutazione gia' inserita 
-                // dall'utente per la domanda trovata
+                // dall'utente per la risposta trovata
                 if ( $this->ottieniValutazione($id_risposta, $id_utente) == null ) // Sono sicuro che non c'e'
                 {
                     // Posso procedere all'inserimento della valutazione
@@ -291,7 +293,7 @@
                     $nuova_valutazione->setAttribute('peso', $peso);
                     $nuova_valutazione->setAttribute('rating', $rating);
 
-                    // Aggiungo la nuova valutazione alla lista di valutazioni della domanda
+                    // Aggiungo la nuova valutazione alla lista di valutazioni della risposta
                     $figli[$i]->lastChild->appendChild($nuova_valutazione);
 
                     // Salvo le modifiche sul file xml
@@ -314,7 +316,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle risposte
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una risposta, verifico se l'id
             // corrisponde a quello passato come parametro
@@ -343,18 +345,25 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle risposte
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una risposta, verifico se l'id della domanda
             // corrisponde a quello passato come parametro
-            for ( $i=0; $i<$n_figli; $i++ )
+            $i = 0;
+            while ( $i < $n_figli )
             {
                 // Verifico se l'id della domanda corrisponde
                 // a quello passato
                 $id = $figli[$i]->getAttribute("id_domanda");
+
                 if ( $id == $id_domanda )
+                {
                     // Elimino la risposta associata alla domanda
                     $this->oggettoDOM->documentElement->removeChild($figli[$i]);
+                    $n_figli--;
+                }
+                else
+                    $i++;
             }
 
             // Salvo i cambiamenti sul file
@@ -374,7 +383,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle risposte
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una risposta, verifico se l'id
             // corrisponde a quello passato come parametro

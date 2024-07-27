@@ -6,7 +6,7 @@
     // Inizializzazione variabili per gestione popup
     $mostraPopup = false; $err = false; $msg = "";
 
-    // Verifico che vi sia una sessione attiva per un utente admin o gestore
+    // Verifico che vi sia una sessione attiva per un cliente
     // altrimenti ridireziono sulla homepage
     if (!($sessione_attiva && $_SESSION["ruolo"] == 'C'))
         header("Location: homepage.php");
@@ -29,7 +29,9 @@
             if ( $id_domanda != null )
             {
                 $err = false;
-                $msg = 'Inserimento domanda avvenuto con successo';
+                
+                // Ridireziono l'utente sulla pagina del prospetto domande
+                header("Location: domande.php");
             }
             else
                 $msg = "Errore nell'inserimento della domanda"; // Errore generico causato dai file XML

@@ -45,7 +45,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle domande
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una domanda, verifico se l'id
             // corrisponde a quello passato come parametro
@@ -105,7 +105,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle domande
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una domanda, estraggo contenuto e valutazioni
             for ( $i=0; $i<$n_figli; $i++ )
@@ -134,6 +134,7 @@
                         $nuova_valutazione = new ValutazioneDomanda();
                         $nuova_valutazione->peso = $valutazioni[$j]->getAttribute('peso');
                         $nuova_valutazione->rating = $valutazioni[$j]->getAttribute('rating');
+                        $nuova_valutazione->id_utente = $valutazioni[$j]->getAttribute('id_utente');
 
                         // Aggiungo la valutazione alla lista delle valutazioni
                         array_push($lista_valutazioni, $nuova_valutazione);
@@ -162,7 +163,8 @@
 
             // Ottengo l'id dell'ultimo figlio della radice, ovvero dell'ultima domanda
             $id_nuova_domanda = 1;
-            $ultima = $this->oggettoDOM->documentElement->lastElementChild;
+            $figli = $this->oggettoDOM->documentElement->childNodes;
+            $ultima = $figli[count($figli) - 1];
             if ( $ultima != null ) // Ci sono altre domande
             {
                 $id_ultima = $ultima->getAttribute('id');
@@ -243,7 +245,7 @@
             
             // Ottengo la lista di figli della radice, ovvero la lista delle domande
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
             for ( $i=0; $i<$n_figli && !$trovata; $i++ )
             {
                 // Verifico se ho raggiunto la domanda
@@ -292,7 +294,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle domande
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una domanda, verifico se l'id
             // corrisponde a quello passato come parametro
@@ -330,7 +332,7 @@
 
             // Ottengo la lista di figli della radice, ovvero la lista delle domande
             $figli = $this->oggettoDOM->documentElement->childNodes;
-            $n_figli = $this->oggettoDOM->documentElement->childElementCount;
+            $n_figli = count($figli);
 
             // Per ogni figlio, ovvero una domanda, verifico se l'id
             // corrisponde a quello passato come parametro

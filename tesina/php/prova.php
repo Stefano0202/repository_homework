@@ -1,6 +1,6 @@
 <?php
-    require 'gestoriXML/gestoreDomande.php';
+    require 'gestoriXML/gestorePortafogliBonus.php';
 
-    $g = new GestoreDomande();
-    $g->rimuoviDomanda(3);
+    $g = new GestorePortafogliBonus();
+    $g->aggiornaPortafoglioBonus('4', 5, 2);
 ?>

@@ -2,6 +2,8 @@
     $stellina_vuota = " &#9734;";
     $stellina_piena = " &#9733;";
 
+    require_once 'gestoriXML/gestoreAcquisti.php';
+
     // Funzioni di libreria da utilizzare al bisogno
 
     // Funzione per url sfondo tra quelli disponibili
@@ -12,6 +14,32 @@
     
         $url = '../img/background/' . $nome_file[$scelta_casuale];
         return $url;
+    }
+
+    // Funzione per ottenere il path della icona associata ad una categoria
+    function ottieniPathIcona($id_categoria)
+    {
+        $nome_file = '';
+        
+        // Switch sulla categoria per determinale il nome del file
+        switch ($id_categoria)
+        {
+            case "1":
+                $nome_file='laptop.png'; break;
+            case "2":
+                $nome_file='smartphone.png'; break;
+            case "3":
+                $nome_file='tv.png'; break;
+            case "4":
+                $nome_file='lavatrice.png'; break;
+            case "5":
+                $nome_file='console.png'; break;
+
+            default:
+                $nome_file = ''; break;
+        }
+
+        return '../img/icone/' . $nome_file;
     }
 
     // Funzione per ottenere elenco operazioni da includere nella sidebar
@@ -30,18 +58,18 @@
                 $ris = ""; break;
             
             case 'A':
-                $ris = '<li><a href="gestioneClienti.php">Gestione clienti</a>' .
-                            '</li><li><a href="gestioneRicariche.php">Gestione ricariche</a></li>';
+                $ris = '<li class="liSidebar"><a href="gestioneClienti.php">Gestione clienti</a>' .
+                            '</li><li class="liSidebar"><a href="gestioneRicariche.php">Gestione ricariche</a></li>';
                 break;
             
             case 'G':
-                $ris = '<li><a href="gestioneClienti.php">Visualizza clienti</a>';
+                $ris = '<li class="liSidebar"><a href="gestioneClienti.php">Visualizza clienti</a></li>';
                 break;
             
             case 'C':
-                $ris = '<li><a href="areaPersonale.php">Area personale</a>' .
-                            '</li><li><a href="carrello.php">Carrello</a>' .
-                            '</li><li><a href="richiestaRicarica.php">Richiesta ricarica</a></li>';
+                $ris = '<li class="liSidebar"><a href="areaPersonale.php">Area personale</a>' .
+                            '</li><li class="liSidebar"><a href="carrello.php">Carrello</a>' .
+                            '</li><li class="liSidebar"><a href="richiestaRicarica.php">Richiesta ricarica</a></li>';
                 break;
         }
 
@@ -153,5 +181,109 @@
         $frammento = str_replace("%ID_PADRE%", $padre, $frammento);
         
         return $frammento;
+    }
+
+    // Funzione per ritornare l'importo dopo aver applicato lo sconto
+    function applicaSconto($importo, $sconto)
+    {
+        // Conversione dell'importo e dello sconto a tipo numerico
+        $importo = floatval($importo);
+        $sconto = floatval($sconto);
+
+        // Nuovo importo
+        $ris = round((100 - $sconto)/100 * $importo);
+        
+        return $ris;
+    }
+
+    // Funzione per calcolare lo sconto fisso. Riceve l'id del cliente
+    // la reputazione e la data di registrazione (dati dal database).
+    // Provvede a reperire gli altri parametri di calcolo ovvero:
+    // ammontare dei crediti spesi dal cliente;
+    // ammontare dei crediti spesi dal cliente quest'anno
+    function calcolaScontoFisso($id_cliente, $reputazione, $data_registrazione)
+    {
+        // Allocazione gestore acquisti per reperire le informazioni suddette
+        $gestore_acquisti = new GestoreAcquisti();
+
+        // Ottengo le statistiche suddette associate al cliente
+        $statistiche = $gestore_acquisti->ottieniStatistische($id_cliente);
+
+        // Calcolo del periodo decorso in anni dall'iscrizione dell'utente
+        $anno_corrente = date('Y');
+        $anno_reg = date('Y', strtotime($data_registrazione));
+        $periodo = $anno_corrente - $anno_reg;
+
+        // Applico la formula del documento per il calcolo dello sconto fisso
+        $sconto_fisso = 0.5 * $periodo + 0.01 * $statistiche[0] + 0.03 * $statistiche[1] + 0.1 * intval($reputazione) / 100;
+        $sconto_fisso = round($sconto_fisso);
+
+        // Lo sconto fisso non puo' superare il 20% 
+        if ( $sconto_fisso > 20 )
+            $sconto_fisso = 20;
+
+        return $sconto_fisso;
+    }
+
+    // Funzione per ordinare il vettore dei prodotti in base al prezzo decrescente
+    function ordinaProdottiPrezzoDecrescente($prodotti)
+    {
+        // Applico l'algoritmo bubblesort di ordinamento
+        $scambi = true; $k = 0;
+        $dim = count($prodotti);
+
+        while ( $scambi )
+        {
+            // Set degli scambi a false
+            $scambi = false;
+
+            // Scansione del vettore e ordinamento per prezzo
+            // Alla fine di ogni iterazione, in ultima posizione
+            // ci sara' l'elemento corretto
+            for ( $i=0; $i < $dim - $k - 1; $i++ )
+            {
+                // Verifico se effettuare lo scambio
+                if ( $prodotti[$i]->prezzo_listino < $prodotti[$i+1]->prezzo_listino )
+                {
+                    $app = $prodotti[$i];
+                    $prodotti[$i] = $prodotti[$i+1];
+                    $prodotti[$i+1] = $app;
+                    $scambi = true;
+                }
+            }
+        }
+
+        return $prodotti;
+    }
+
+    // Funzione per ordinare il vettore dei prodotti in base al prezzo crescente
+    function ordinaProdottiPrezzoCrescente($prodotti)
+    {
+        // Applico l'algoritmo bubblesort di ordinamento
+        $scambi = true; $k = 0;
+        $dim = count($prodotti);
+
+        while ( $scambi )
+        {
+            // Set degli scambi a false
+            $scambi = false;
+
+            // Scansione del vettore e ordinamento per prezzo
+            // Alla fine di ogni iterazione, in ultima posizione
+            // ci sara' l'elemento corretto
+            for ( $i=0; $i < $dim - $k - 1; $i++ )
+            {
+                // Verifico se effettuare lo scambio
+                if ( $prodotti[$i]->prezzo_listino > $prodotti[$i+1]->prezzo_listino )
+                {
+                    $app = $prodotti[$i];
+                    $prodotti[$i] = $prodotti[$i+1];
+                    $prodotti[$i+1] = $app;
+                    $scambi = true;
+                }
+            }
+        }
+
+        return $prodotti;
     }
 ?>

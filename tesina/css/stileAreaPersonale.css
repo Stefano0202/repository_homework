@@ -1,3 +1,8 @@
+body
+{
+    overflow: auto;
+}
+
 #sezioneDati
 {
     width: 100%;
@@ -7,7 +12,6 @@
     align-items: center;
     gap: 40px;
     margin-top: 2%;
-    overflow: auto;
 }
 
 .riquadroInformazioni
@@ -48,6 +52,14 @@
 span
 {
     color: white;
+}
+
+.riquadroAcquisti span
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 p 
@@ -107,22 +119,4 @@ h4
 .acquisto p span span
 {
     color: black;
-}
-
-.riquadroAcquisti form
-{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.riquadroAcquisti form fieldset
-{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

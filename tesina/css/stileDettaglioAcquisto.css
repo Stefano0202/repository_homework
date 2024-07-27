@@ -13,7 +13,6 @@
 {
     margin-top: 3%;
     width: 80%;
-    max-height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,10 +22,10 @@
     gap: 30px;
     padding: 30px;   
     border-radius: 15px;
-    font-size: 150%;
+    font-size: 130%;
 }
 
-span
+.acquisto span
 {
     color:darkblue;
 }
@@ -37,21 +36,27 @@ span
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 10%;
+    flex-wrap: wrap;
 }
 
-.acquisto p span span, #sezioneProdotti p span span
+.acquisto p > span
+{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex: 0 0 20%;
+    align-items: center;
+}
+
+.acquisto p span span
 {
     color: black;
 }
 
 #sezioneProdotti
 {
-    max-height: 85%;
     width: 80%;
-    overflow-y: auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
     border-style: solid;
     background-color: #11999E;
@@ -62,11 +67,35 @@ span
     font-size: 150%;
 }
 
-#sezioneProdotti p
+#sezioneProdotti ul
 {
-    margin-left: 0;
     width: 100%;
     display: flex;
-    gap: 10%;
+    flex-direction: column;
+    border-style: solid;
+    overflow-x: auto;
 }
+
+#sezioneProdotti li p
+{
+    display: flex;
+}
+
+#sezioneProdotti li p span
+{
+    width: 25%;
+    overflow-x: auto;
+}
+
+#sezioneProdotti li p>span:nth-child(1)
+{
+    width: 50%;
+}
+
+#sezioneProdotti li p > span span:nth-child(1)
+{
+    color: black;
+}
+
+
 

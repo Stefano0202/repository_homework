@@ -1,0 +1,1364 @@
+\documentclass[a4paper, 14pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{geometry}
+\usepackage{imakeidx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\pagestyle{myheadings}
+\usepackage{titling}
+\usepackage[fontsize=12pt]{fontsize}
+\usepackage{chngcntr}
+\usepackage{float}
+\usepackage{eurosym}
+\counterwithin{figure}{section}
+\graphicspath{ {./img/} }
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage[export]{adjustbox}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{lightblue}{rgb}{0.0,0.0,0.9}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{coloreSfondo}{RGB}{255, 255, 230}
+\definecolor{coloreSfondoGrammatiche}{RGB}{230, 255, 230}
+\lstset{language=SQL,
+	basicstyle={\small\ttfamily},
+	breakatwhitespace=true,
+	belowskip=3mm,
+	classoffset=0,
+	breaklines=true,
+	columns=flexible,
+	commentstyle=\color{dkgreen},
+	frameshape={}{}{}{}, %To remove to vertical lines on left, set `frameshape={}{}{}{}`
+	keywordstyle=\color{blue},
+	numbers=left, %If you want line numbers, set `numbers=left`
+	numberstyle=\tiny,
+	stringstyle=\color{mauve},
+	tabsize=3,
+	backgroundcolor=\color{coloreSfondo},
+	frame=shadowbox,
+	xleftmargin =1em,
+	framexleftmargin=0.25em,
+	showstringspaces=false,
+}
+
+\lstdefinelanguage{XML}
+{
+	morestring=[s][\color{mauve}]{"}{"},
+	morestring=[s][\color{black}]{>}{<},
+	morecomment=[s]{<?}{?>},
+	morecomment=[s][\color{dkgreen}]{<!--}{-->},
+	stringstyle=\color{black},
+	identifierstyle=\color{lightblue},
+	keywordstyle=\color{red},
+	morekeywords={xmlns,xsi,noNamespaceSchemaLocation,type,id,x,y,source,target,version,tool,transRef,roleRef,objective,eventually}% list your attributes here
+}
+
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{darkgray}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+% Info documento
+\date{A.A. 2023/2024}
+\pagestyle{headings}
+\geometry{a4paper, top=3cm, bottom=3cm, left=2.2cm, right=2.2cm}
+\makeindex
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+
+
+\title{\Huge {\textbf{UNITECNO}}}
+\author{\Large Matteo Ventali, Stefano Rosso \\ \Large Ingegneria dell'Informazione (Sede di Latina) \\ \Large Università La Sapienza Roma }
+
+
+% Inizio documento
+\begin{document}
+	% Intestazione
+	\begin{figure}[t]
+		\includegraphics[width=60mm]{logo.png}
+	\end{figure}
+	
+	\maketitle	
+	
+	% Pagina che contiene l'indice del documento
+	\newpage
+	%\tableofcontents
+	\tableofcontents
+	
+	% Inizio corpo documento
+	\newpage
+	\begin{flushleft}
+		
+	\section{Introduzione e descrizione dei dati}
+		\subsection{Introduzione} \label{Introduzione}
+			L'applicazione web UNITECNO ha come obiettivo la realizzazione di un negozio virtuale finalizzato alla vendita di dispositivi tecnologici, tramite un processo di fidelizzazione dei clienti.
+			
+			Il sito web offre un catalogo di prodotti, divisi per categoria,
+			e documentati da immagini che ne riportano le specifiche tecniche, una breve descrizione e il prezzo. 
+			La valuta all'interno del sistema è costituita dai \textit{crediti}.
+			Il catalogo è fruibile da ogni utente del sito e può essere visionato secondo diversi criteri:
+			\begin{itemize}
+				\item prezzo;
+				\item categoria;
+				\item tipo.
+			\end{itemize}
+			
+			\subsubsection{Categorie di dispositivi} \label{CategorieDisp}
+			Le categorie dei dispositivi sono:
+			\begin{itemize}
+				\item informatica;
+				\item telefonia;
+				\item TV e home;
+				\item elettrodomestici;
+				\item tempo libero.
+			\end{itemize}
+		
+			\bigskip \textbf{Categoria informatica} \\ \smallskip
+			Nella categoria informatica rientrano i seguenti dispositivi:
+				\begin{itemize}
+					\item computer portatili;
+					\item computer fissi;
+					\item tablet;
+					\item stampanti;
+					\item accessori.
+				\end{itemize}
+			
+			\bigskip \textbf{Categoria telefonia} \\ \smallskip
+			Nella categoria telefonia rientrano i seguenti dispositivi:
+			\begin{itemize}
+				\item smartphone e cellulari;
+				\item telefoni fissi;
+				\item accessori.
+			\end{itemize}
+				
+			\bigskip \textbf{Categoria TV e home} \\ \smallskip
+			Nella categoria TV e home rientrano i seguenti dispositivi:
+			\begin{itemize}
+				\item televisori;
+				\item accessori.
+			\end{itemize}
+			
+			\bigskip \textbf{Categoria elettrodomestici} \\ \smallskip
+			Nella categoria elettrodomestici rientrano i seguenti dispositivi:
+			\begin{itemize}
+				\item lavatrici;
+				\item frigoriferi;
+				\item lavastoviglie;
+				\item piani cottura;
+				\item forni;
+				\item condizionatori;
+				\item accessori.
+			\end{itemize}			
+			
+			\bigskip \textbf{Categoria tempo libero} \\ \smallskip
+			Nella categoria tempo libero rientrano i seguenti dispositivi:
+			\begin{itemize}
+				\item cuffie e auricolari;
+				\item fotocamere e videocamere;
+				\item console da gioco;
+				\item accessori.
+			\end{itemize}			
+			
+			\subsubsection{Categorie di utenti} \label{CategorieUtenti}
+			Gli utenti si dividono in:
+			\begin{itemize}
+				\item non registrati, da qui in avanti denominati \textit{visitatori};
+				\item registrati, da qui in avanti denominati \textit{clienti};
+				\item \textit{gestori};
+				\item amministratori, da qui in avanti denominati \textit{admin}.
+			\end{itemize}
+			
+			\bigskip \textbf{Visitatori} \\ \smallskip
+			L'utente visitatore può:
+			\begin{itemize}
+				\item accedere al catalogo;
+				\item accedere alla sezione \textit{contatti};
+				\item visionare le domande e le FAQ;
+				\item registrarsi.
+			\end{itemize}
+			
+			\bigskip \textbf{Clienti} \\ \smallskip
+			Ogni cliente usufruisce di due portafogli:
+			\begin{itemize}
+				\item \underline{portafoglio standard}, ricaricabile;
+				\item \underline{portafoglio bonus}, alimentato a seguito di acquisti effettuati.
+			\end{itemize}
+			
+			L'utente cliente può:
+			\begin{itemize}
+				\item fare tutto quello che è permesso al visitatore, ma non può registrarsi;
+				\item accedere al profilo, visionare gli acquisti effettuati, il portafoglio
+				standard e quello bonus, la propria reputazione e può vedere e gestire i propri dati personali;
+				\item acquistare dal catalogo, inserendo i prodotti nel carrello;
+				\item visionare il contenuto del carrello;
+				\item scrivere recensioni, domande e risposte;
+				\item giudicare gli interventi degli altri clienti;
+				\item ricaricare il portafoglio standard attraverso una richiesta all'admin.
+			\end{itemize}
+			L’indirizzo di consegna è di default quello indicato dall’utente nel profilo, ma può essere
+			modificato prima di finalizzare l’acquisto. 
+		
+			\bigskip \textbf{Gestori} \\ \smallskip
+			L'utente gestore può:
+			\begin{itemize}
+				\item aggiungere, eliminare, modificare prodotti in catalogo;
+				\item definire gli sconti sui prodotti;
+				\item consultare il profilo dei clienti;
+				\item moderare e dare un giudizio ai contributi dei clienti;
+				\item rispondere alle domande;
+				\item aggiungere domande e risposte alle FAQ;
+				\item elevare una domanda dei clienti alle FAQ, con relativa risposta.
+			\end{itemize}
+		
+			\bigskip \textbf{Admin} \\ \smallskip
+			L'utente admin può:
+			\begin{itemize}
+				\item visionare e modificare i dati anagrafici e degli utenti;
+				\item bannare e riattivare i clienti;
+				\item accettare o rifiutare le richieste di ricarica dei clienti;
+				\item moderare e dare un giudizio ai contributi dei clienti;
+				\item aggiungere domande e risposte alle FAQ;
+				\item elevare una domanda dei clienti alle FAQ, con relativa risposta.
+			\end{itemize}
+		
+		\subsection{Note}
+			\subsubsection{Portafogli} \label{Portafogli}
+				Nell'applicazione, associati ad ogni cliente, verranno gestiti due portafogli:
+				\begin{itemize}
+					\item \underline{portafoglio standard};
+					\item \underline{portafoglio bonus}.
+				\end{itemize}
+
+				\bigskip \textbf{Portafoglio standard} \\ \smallskip \label{PortSTD}			
+				Il portafoglio standard viene ricaricato attraverso l’acquisto dei crediti mediante richiesta tramite form.
+				L’utente può scegliere tra dei tagli ben definiti: nella form sarà presente un menù a tendina in cui poter selezionare l'entità del versamento da effettuare.
+				I tagli disponibili sono:
+				\begin{itemize}
+					\item 25\euro \> $\rightarrow$ 5 crediti;
+					\item 50\euro \> $\rightarrow$ 10 crediti;
+					\item 100\euro \> $\rightarrow$ 20 crediti;
+					\item 200\euro \> $\rightarrow$ 40 crediti;
+					\item 500\euro \> $\rightarrow$ 100 crediti.
+				\end{itemize}
+				
+				\bigskip \textbf{Portafoglio bonus} \\ \smallskip \label{PortBonus}
+				Il portafoglio bonus si alimenta in due diversi modi:
+				\begin{itemize}
+				\item ottenendo una quota di crediti pari all'1.5\% sull'importo totale dell'acquisto effettuato (\textit{bonus fisso});
+				\item ottenendo crediti bonus per ogni acquisto relativo ad un prodotto in offerta speciale (\textit{bonus speciale}).
+				\end{itemize}
+			
+			\subsubsection{Sconti e offerte} \label{Sconti}
+				Uno sconto è una percentuale di riduzione del prezzo e può essere di tre tipi:
+				\begin{itemize}
+					\item \underline{offerta speciale}, per uno specifico prodotto in un determinato periodo temporale;
+					\item \underline{fisso}, calcolato sulla base delle transazioni effettuate dall’utente;
+					\item \underline{variabile}, in base alle scelte effettuate dal cliente sull’utilizzo dei crediti bonus (disponibili nel suo portafoglio bonus).
+				\end{itemize}
+			
+				\bigskip \textbf{Offerta speciale} \\ \smallskip \label{OffSpec}
+				L'offerta speciale viene creata da un gestore che ne definisce il prodotto target, la percentuale di sconto, la sua durata temporale e la ricompensa in crediti bonus.
+				Lo sconto in oggetto, se presente, blocca la possibilità al cliente di godere dello sconto fisso e variabile.
+				
+				\bigskip \textbf{Sconto fisso} \\ \smallskip
+				Lo sconto fisso si basa sull'analisi degli acquisti effettuati dal cliente. \\
+				In fase di analisi si tiene conto dei seguenti parametri:
+				\begin{itemize}
+					\item ammontare N dei crediti spesi dal cliente;
+					\item ammontare M dei crediti spesi dal cliente nell'anno solare corrente;
+					\item reputazione R del cliente;
+					\item periodo A decorso dall'iscrizione del cliente, misurato in anni.
+				\end{itemize}
+				La funzione per calcolare lo sconto fisso è:
+				\begin{center}
+					$ y = 0.5 \cdot A + 0.01 \cdot N + 0.03 \cdot M + 0.1 \cdot R $
+				\end{center}
+				Lo sconto fisso ha un limite massimo del 20\%.
+				
+				\bigskip \textbf{Sconto variabile} \\ \smallskip
+				Lo sconto variabile si basa sull'utilizzo dei crediti bonus disponibili nel portafoglio bonus del cliente.
+				Per poter utilizzare i crediti presenti nel portafoglio bonus, si fa riferimento
+				al periodo di acquisizione di tali crediti. In base all’anno in cui vengono maturati, essi hanno
+				un peso diverso:
+				\begin{itemize}
+					\item coefficiente anno corrente $ = 0.8 $
+					\item coefficiente anno corrente $ - 1 = 0.9 $
+					\item coefficiente anno corrente $ - 2 = 1 $
+					\item coefficiente anno corrente $ - 3 $ e oltre $ = 2 $
+				\end{itemize}
+				La funzione utilizzata per lo sconto variabile è: \\
+				 \begin{center}
+				 	$ s = q \div coefficienti[j] $
+				 \end{center}
+				\newpage in cui:
+				\begin{itemize}
+					\item j è l’anno di riferimento;
+					\item q è l’ammontare dei crediti bonus riferiti all’anno j-esimo;
+					\item coefficienti[j] è il peso conferito ai crediti bonus (vedi sopra).
+				\end{itemize}
+
+				Supponendo che un cliente voglia impegnare N crediti e ne abbia N1 nell'anno corrente, N2
+				l'anno scorso ed N3 due anni fa, lo sconto sarà così calcolato: 
+				\begin{center}
+					$ s = N1\div0.8 + N2\div0.9 + N3\div1 $\\
+				\end{center}
+				Il sistema provvederà in modo automatico a consumare prima i crediti bonus meno recenti.
+				Lo sconto variabile ha un limite massimo del 20\% sul totale dell'acquisto effettuato.
+				
+			\subsubsection{Reputazione e post} \label{RepPost}
+				Un cliente può postare domande e recensioni. Le risposte alle domande possono essere pubblicate da un altro cliente oppure
+				da un admin o gestore.
+				Ciascuno di questi post può essere valutato dagli altri utenti (non visitatori).
+				La valutazione può essere fatta una sola volta. L'applicazione permetterà all'utente di visualizzare la propria valutazione.
+				La valutazione non può essere fatta sui propri post.\\
+				Alcune domande e risposte possono essere selezionate da un admin o gestore a far parte delle FAQ.
+				Se nessuna risposta è attendibile, per una determinata domanda, l'admin o il gestore aggiunge una risposta per completare la FAQ.\\
+				Un admin o gestore può inserire una nuova domanda (non presente tra quelle dei clienti) come FAQ con relativa risposta.
+				
+				\bigskip \textbf{Reputazione di un cliente} \\ \smallskip
+				La reputazione del cliente è un indicatore compreso tra 1 e 100.\\
+				Inizialmente, il cliente ha una reputazione pari a 1.\\
+				La reputazione di un cliente è calcolata in base ai giudizi che i suoi post hanno ricevuto.\\
+				
+				
+				\bigskip \textbf{Pesi e valutazione} \\ \smallskip	\label{PesiVal}		
+				I giudizi hanno peso diverso a seconda della reputazione di chi li emette (nel momento in cui li emette). I giudizi di admin e gestori hanno un peso maggiore di quello dei clienti:
+				\begin{itemize}
+					\item admin e gestori hanno peso 200\%;
+					\item i clienti hanno peso percentuale dato dalla reputazione (quindi da 1\% a 100\%).
+				\end{itemize}
+				
+				Un post viene valutato tramite una scala da 1 (disprezzo) a 5 (grande apprezzamento). Precisamente:
+				\begin{itemize}
+					\item 1 stellina $\rightarrow$ decremento di 4 punti;
+					\item 2 stelline $\rightarrow$ decremento di 2 punti;
+					\item 3 stelline $\rightarrow$ punteggio intatto;
+					\item 4 stelline $\rightarrow$ incremento di 2 punti;
+					\item 5 stelline $\rightarrow$ incremento di 4 punti.
+				\end{itemize}
+			
+				Detto P il punteggio definito dalla scala precedente e W il peso dell'utente che emette il giudizio, quest'ultimo viene calcolato tramite la seguente funzione:
+				\begin{center}
+					$ g = P \cdot \frac{W}{100} $
+				\end{center}
+
+		\subsection{Casi d'uso} \label{CasiUso}
+			\subsubsection{Registrazione}
+				\textbf{Precondizioni}
+				\begin{itemize}
+					\item il visitatore è collegato alla homepage del sito.
+				\end{itemize}
+				\textbf{Eventi}
+				\begin{enumerate}
+					\item il visitatore clicca sul bottone di registrazione;
+					\item il visitatore viene reindirizzato alla pagina di registrazione in cui è presente una form da compilare;
+					\item il visitatore compila la form con i propri dati personali e le credenziali;
+					\item il visitatore clicca sul bottone di invio richiesta.
+				\end{enumerate}
+				\textbf{Postcondizioni}
+				\begin{itemize}
+					\item se la registrazione è avvenuta con successo il visitatore è diventato un cliente. Viene reindirizzato alla homepage del sito;
+					\item se la registrazione non è avvenuta con successo vengono notificati gli errori. Si ritorna alla fase 2.
+				\end{itemize}
+			
+			
+			\bigskip
+			\subsubsection{Accesso e gestione profilo}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come cliente.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il cliente accede alla propria area personale;
+				\item il cliente visualizza:
+					\begin{itemize}
+						\item i dati personali;
+						\item gli acquisti effettuati;
+						\item il saldo del portafoglio standard;
+						\item il saldo del portafoglio bonus; 
+						\item la propria reputazione.
+					\end{itemize} 
+				\item il cliente ha facoltà di modificare i propri dati personali. Viene reindirizzato 
+					  in una pagina con una form precompilata in cui può modificare i campi voluti.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item in caso di modifica dei dati personali avvenuta con successo l'utente ritorna alla fase 2;
+				\item in caso di modifica dei dati personali non avvenuta con successo vengono notificati gli errori. L'utente rimane nella fase 3.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Acquisto}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come cliente;
+				\item il cliente ha acceduto al catalogo dei prodotti.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il cliente seleziona il prodotto desiderato dal catalogo e viene reindirizzato alla pagina del prodotto;
+				\item il cliente aggiunge il prodotto suddetto al carrello;
+				\item il cliente ripete le fasi 1-2 per tutti i prodotti desiderati;
+				\item il cliente accede al carrello;
+				\item il cliente sceglie l'ammontare di crediti bonus (se possibile) da utilizzare per usufruire dello sconto aggiuntivo
+				      sul totale del carrello (senza prendere in considerazione i prodotti in offerta speciale);
+				\item il cliente modifica eventualmente l'indirizzo di consegna;
+				\item il cliente finalizza l'acquisto.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item in caso di acquisto effettuato con successo l'utente viene reindirizzato alla sua area personale dove potrà visualizzare la lista degli acquisti;
+				\item in caso di acquisto non effettuato con successo l'utente ritorna alla fase 4.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Inserimento recensione}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come cliente;
+				\item il cliente ha selezionato un prodotto dal catalogo.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il cliente raggiunge la sezione \textit{Recensioni} nella pagina del prodotto;
+				\item il cliente inserisce la recensione.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la recensione sarà visibile sulla pagina del prodotto in oggetto.
+			\end{itemize}
+			
+			\bigskip
+			\subsubsection{Inserimento domanda}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come cliente;
+				\item il cliente ha acceduto alla sezione \textit{Domande}.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il cliente clicca sul bottone per aggiungere una domanda;
+				\item il cliente viene reindirizzato in una pagina con una form da compilare;
+				\item il cliente compila la form con la propria domanda;
+				\item il cliente sottomette la domanda.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la domanda viene resa visibile a tutti.
+			\end{itemize}
+			
+			\bigskip
+			\subsubsection{Inserimento risposta}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come admin/gestore/cliente;
+				\item l'utente ha acceduto alla sezione \textit{Domande}.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'utente seleziona la domanda a cui rispondere;
+				\item l'utente viene reindirizzato in una pagina specifica e visualizza la domanda e le eventuali risposte già presenti;
+				\item l'utente inserisce tramite form la propria risposta.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la risposta viene resa visibile insieme a quelle eventualmente presenti.
+			\end{itemize}
+			
+			\bigskip
+			\subsubsection{Valutazione interventi}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come admin/gestore/cliente;
+				\item l'utente raggiunge la sezione \textit{Recensioni} di un prodotto o la sezione \textit{Domande}.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'utente raggiunge l'intervento che desidera valutare;
+				\item l'utente giudica l'intervento mediante le stelline. In caso di admin o gestore ha la facoltà di eliminare l'intervento.
+				\item l'utente sottomette la valutazione o procede all'eliminazione.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la valutazione complessiva dell'intervento viene aggiornata o l'intervento non è più visibile.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Ricarica portafoglio standard}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come cliente;
+				\item il cliente accede alla pagina di richiesta ricarica.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il cliente viene reindirizzato alla pagina di ricarica in cui è mostrata una form da compilare;
+				\item il cliente compila la form selezionando il taglio di ricarica desiderato;
+				\item il cliente sottomette la richiesta di ricarica.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la richiesta di ricarica è visibile agli admin per accettazione/diniego.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Inserimento prodotti}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore;
+				\item il gestore ha acceduto al catalogo.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il gestore seleziona l'opzione di inserimento prodotto;
+				\item il gestore viene reindirizzato ad una pagina con una form da compilare;
+				\item il gestore compila la form con i dettagli del prodotto;
+				\item il gestore sottomette l'inserimento del prodotto.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item il prodotto è visibile nel catalogo.
+			\end{itemize}
+			
+			\bigskip
+			\subsubsection{Gestione prodotti}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore;
+				\item il gestore ha acceduto al catalogo.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il gestore seleziona il prodotto da gestire;
+				\item il gestore viene reindirizzato alla pagina del prodotto;
+				\item il gestore sceglie l'opzione per mostrare/nascondere o per modificare il prodotto;
+				\item in caso di modifica, il gestore viene reindirizzato ad una pagina con una form precompilata con i dettagli del prodotto;
+				\item in caso di modifica, il gestore apporta le modifiche desiderate;
+				\item in caso di modifica, il gestore sottomette le modifiche apportate.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item il prodotto non è visibile oppure è visibile nel catalogo. In caso di modifica il prodotto assume le modifiche apportate.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Inserimento offerta speciale}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore;
+				\item il gestore ha acceduto al catalogo e selezionato un prodotto;
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item il gestore seleziona l'opzione di inserimento offerta speciale per il prodotto;
+				\item il gestore viene reindirizzato ad una pagina con una form da compilare;
+				\item il gestore compila la form con i dettagli dell'offerta speciale. Nel caso in cui l'offerta è già presente la form sarà precompilata per permettere la sua modifica;
+				\item il gestore sottomette l'offerta speciale.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item il prodotto è visibile nel catalogo al prezzo scontato.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Gestione clienti}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore/admin.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'utente accede all'elenco degli utenti;
+				\item l'utente seleziona il cliente che intende visualizzare;
+				\item l'utente viene reindirizzato alla pagina specifica del cliente dove visiona i suoi dati.
+					  L'admin ha facoltà di bannare (o riattivare se già bannato) il cliente in oggetto.
+					  L'admin ha facoltà di modificare i dati del cliente;
+				\item in caso di modifica dei dati, l'admin viene reindirizzato ad una pagina con una form precompilata
+					  da modificare;
+				\item in caso di modifica dei dati, l'admin sottomette le modifiche.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item in caso di ban (riattivazione) il cliente non può effettuare il login (può effettuare il login);
+				\item in caso di modifica il cliente visualizzerà i suoi dati aggiornati.
+			\end{itemize}
+			
+			\bigskip
+			
+			\subsubsection{Gestione ricariche}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come admin.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'admin accede alla sezione di gestione ricariche;
+				\item l'admin viene reindirizzato alla pagina di riepilogo per le richieste di ricarica non ancora gestite;
+				\item l'admin ha facoltà di accettare/rifiutare una richiesta di ricarica.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item il cliente vede aggiornato il saldo del suo portafoglio standard in caso di accettazione.
+			\end{itemize}
+			
+			\bigskip
+			\subsubsection{Inserimento FAQ}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore/admin;
+				\item l'utente accede alla sezione \textit{FAQ}.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'utente clicca sul bottone per inserire una nuova FAQ;
+				\item l'utente viene reindirizzato ad una pagina con una form da compilare;
+				\item l'utente compila la form con domanda e risposta;
+				\item l'utente sottomette la nuova FAQ.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la FAQ è visibile nella sezione del sito dedicata.
+			\end{itemize}
+		
+			\bigskip
+			\subsubsection{Elevazione a FAQ}
+			\textbf{Precondizioni}
+			\begin{itemize}
+				\item l'utente ha effettuato il login come gestore/admin;
+				\item l'utente si trova sulla pagina relativa ad una domanda.
+			\end{itemize}
+			\textbf{Eventi}
+			\begin{enumerate}
+				\item l'utente clicca il bottone per elevare la domanda ad una FAQ;
+				\item l'utente viene reindirizzato ad una pagina in cui ha la facoltà di scegliere la risposta
+					  migliore o scriverne una propria (entrambe le cose non sono ammesse);
+				\item l'utente sottomette la nuova FAQ.
+			\end{enumerate}
+			\textbf{Postcondizioni}
+			\begin{itemize}
+				\item la FAQ è visibile nella sezione del sito dedicata.
+			\end{itemize}
+
+		
+		\subsection{Strutture dati}
+				\subsubsection{Utenti}
+				I dati degli utenti registrati (clienti, gestori, admin) vengono memorizzati in una tabella SQL con i seguenti campi:
+				\begin{itemize}
+					\item id $\rightarrow$ chiave primaria della tabella generata in maniera automatica dal dbms;
+					\item nome $\rightarrow$ nome dell'utente;
+					\item cognome $\rightarrow$ cognome dell'utente;
+					\item indirizzo $\rightarrow$ indirizzo di residenza dell'utente;
+					\item citta $\rightarrow$ città di residenza dell'utente;
+					\item cap $\rightarrow$ cap della città di residenza dell'utente;
+					\item reputazione $\rightarrow$ punteggio di reputazione dell'utente;
+					\item data\_registrazione $\rightarrow$ data di registrazione dell'utente;
+					\item stato $\rightarrow$ stato dell'account associato all'utente. Può essere attivo (A) o bannato (B);
+					\item username $\rightarrow$ username dell'utente, univoco nel sistema;
+					\item mail $\rightarrow$ indirizzo mail dell'utente, univoco nel sistema;
+					\item password $\rightarrow$ password dell'utente crittografata mediante algoritmo di hash SHA256;
+					\item ruolo $\rightarrow$ tipo di utente. Può essere cliente (C), gestore (G), admin (A);
+					\item saldo\_standard $\rightarrow$ saldo del portafoglio standard del cliente. Per admin o gestori il campo vale NULL.
+				\end{itemize}
+				Lo script di creazione della tabella è: \\
+				\begin{lstlisting}
+create table UTENTI(
+	id          integer auto_increment not null,
+	nome        varchar(50) not null,
+	cognome     varchar(50) not null,
+	indirizzo   varchar(70) not null,
+	citta       varchar(50) not null,
+	cap         varchar(5) not null,
+	reputazione integer default 1,
+	data_registrazione date,
+	stato       char(1) default 'A',
+	username    varchar(50) not null,
+	mail        varchar(50) not null,
+	password    char(64) not null,
+	ruolo   char(1) default 'C',
+	saldo_standard integer default 0,
+	primary key (id),
+	unique (mail),
+	unique (username)
+);
+				\end{lstlisting}
+
+				\subsubsection{Categorie prodotti}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/categorieProdotti.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/grammatiche/grammaticaCategorieProdotti.dtd}
+				\subsubsection{Tagli di ricarica}
+					\textbf{Esempio}\\ 
+						\lstinputlisting[language=XML]{../xmlCopia/documenti/tagliRicarica.xml}
+					\bigskip \textbf{Grammatica}\\
+						\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/grammatiche/grammaticaTagliRicarica.dtd}
+				\subsubsection{Catalogo prodotti}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/catalogoProdotti.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaCatalogoProdotti.xsd}
+				\subsubsection{Domande}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/domande.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaDomande.xsd}
+				\subsubsection{Risposte}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/risposte.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaRisposte.xsd}
+				\newpage
+				\subsubsection{Recensioni}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/recensioni.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaRecensioni.xsd}
+				\subsubsection{Acquisti}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/acquisti.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaAcquisti.xsd}
+				\subsubsection{Portafogli bonus}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/portafogliBonus.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaPortafogliBonus.xsd}
+				\subsubsection{Richieste ricariche}
+					\textbf{Esempio}\\ 
+					\lstinputlisting[language=XML]{../xmlCopia/documenti/richiesteRicariche.xml}
+					\bigskip \textbf{Grammatica}\\
+					\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaRichiesteRicariche.xsd}
+				\subsubsection{Carrelli}
+				\textbf{Esempio}\\ 
+				\lstinputlisting[language=XML]{../xmlCopia/documenti/carrelli.xml}
+				\bigskip \textbf{Grammatica}\\
+				\lstinputlisting[language=XML, backgroundcolor=\color{coloreSfondoGrammatiche}]{../xmlCopia/schema/schemaCarrelli.xsd}
+		\bigskip
+		
+		\subsection{Analisi di alcuni elementi/attributi} \hypersetup{linkcolor=blue}
+			\subsubsection{Categorie prodotti}
+				\begin{itemize}
+					\item \textbf{categorie $\rightarrow$ categoria} l'elemento categoria all'interno dell'elemento categorie permette di definire una macro-categoria di dispositivo (\ref{Introduzione});
+					\item \textbf{categorie $\rightarrow$ categoria $\rightarrow$ tipi\_dispositivo } l'elemento tipi\_dispositivo all'interno dell'elemento categoria permette di definire la lista di tipi specifici per ogni macro-categoria di dispositivo (\ref{CategorieDisp}).
+				\end{itemize}
+			\smallskip
+			\subsubsection{Tagli di ricarica} 
+				\begin{itemize}
+					\item \textbf{tagli $\rightarrow$ taglio[importo] } l'attributo importo dell'elemento taglio 
+					permette di definire l'entità della ricarica in euro disponibile (\ref{PortSTD});
+					\item \textbf{tagli $\rightarrow$ taglio[crediti] } l'attributo crediti dell'elemento taglio 
+					permette di definire il corrispettivo, misurato in crediti, della ricarica in euro disponibile (\ref{PortSTD}).
+				\end{itemize}
+			\smallskip
+			\subsubsection{Catalogo prodotti} 
+				\begin{itemize}
+					\item \textbf{catalogo $\rightarrow$ prodotto[id\_categoria , id\_tipo] } gli attributi id\_categoria e id\_tipo dell'elemento prodotto permettono di specificare la macro-categoria e il tipo specifico di dispositivo (\ref{Introduzione});
+					\item \textbf{catalogo $\rightarrow$ prodotto[mostra] } l'attributo mostra dell'elemento prodotto permette di specificare se il prodotto debba essere mostrato nel catalogo (caso d'uso 1.3.10 \ref{CasiUso});
+					\item \textbf{catalogo $\rightarrow$ prodotto $\rightarrow$ percorso\_immagine } l'elemento percorso\_immagine dell'elemento prodotto permette di memorizzare il pathname (sul server) dell'immagine associata al prodotto
+					(\ref{Introduzione});
+					\item \textbf{catalogo $\rightarrow$ prodotto $\rightarrow$ offerta\_speciale } l'elemento offerta\_speciale dell'elemento prodotto permette di definire un'eventuale offerta speciale associata al prodotto
+					(\ref{OffSpec});
+					\item \textbf{catalogo $\rightarrow$ prodotto $\rightarrow$ offerta\_speciale[percentuale] } l'attributo percentuale dell'elemento offerta\_speciale permette di definire la percentuale di sconto da applicare al prezzo di listino (espresso in crediti) del prodotto (\ref{OffSpec});
+					\item \textbf{catalogo $\rightarrow$ prodotto $\rightarrow$ offerta\_speciale[crediti] } l'attributo crediti dell'elemento offerta\_speciale permette di definire la ricompensa di crediti bonus erogata al cliente che acquista il prodotto durante il periodo di validità dell'offerta speciale (\ref{OffSpec}).
+				\end{itemize}
+			\smallskip
+			
+			\subsubsection{Domande} 
+				\begin{itemize}
+					\item \textbf{domande $\rightarrow$ domanda[id\_utente] } l'attributo id\_utente dell'elemento domanda permette di specificare l'utente che ha pubblicato la domanda (\ref{RepPost});
+					\item \textbf{domande $\rightarrow$ domanda[faq] } l'attributo faq dell'elemento domanda permette di specificare se la domanda  fa parte delle FAQ (\ref{RepPost});
+					\item \textbf{domande $\rightarrow$ domanda $\rightarrow$ valutazioni } l'elemento valutazioni dell'elemento domanda permette di specificare la lista di valutazioni (eventualmente vuota) associate alla domanda (\ref{RepPost});
+					\item \textbf{domande $\rightarrow$ domanda $\rightarrow$ valutazioni $\rightarrow$ valutazione[id\_utente]} l'attributo id\_utente dell'elemento valutazione permette di specificare l'utente che ha effettuato la valutazione alla domanda (\ref{RepPost});
+					\item \textbf{domande $\rightarrow$ domanda $\rightarrow$ valutazioni $\rightarrow$ valutazione[peso]} l'attributo peso dell'elemento valutazione permette di specificare la reputazione dell'utente nel momento in cui ha effettuato la valutazione alla domanda (\ref{PesiVal});
+					\item \textbf{domande $\rightarrow$ domanda $\rightarrow$ valutazioni $\rightarrow$ valutazione[rating]} l'attributo rating dell'elemento valutazione permette di specificare il punteggio assegnato alla domanda dall'utente (\ref{PesiVal}).		
+				\end{itemize}
+			\smallskip
+			\subsubsection{Risposte} 
+				\begin{itemize}
+					\item \textbf{risposte $\rightarrow$ risposta[id\_utente] } l'attributo id\_utente dell'elemento risposta permette di specificare l'utente che ha pubblicato la risposta (\ref{RepPost});
+					\item \textbf{risposte $\rightarrow$ risposta[faq] } l'attributo faq dell'elemento risposta permette di individuare quale risposta  fa parte delle FAQ (\ref{RepPost});
+					\item \textbf{risposte $\rightarrow$ risposta $\rightarrow$ valutazioni } l'elemento valutazioni dell'elemento risposta permette di specificare la lista di valutazioni (eventualmente vuota) associate alla risposta (\ref{RepPost});
+					\item \textbf{risposte $\rightarrow$ risposta $\rightarrow$ valutazioni $\rightarrow$ valutazione[id\_utente]} l'attributo id\_utente dell'elemento valutazione permette di specificare l'utente che ha effettuato la valutazione alla risposta (\ref{RepPost});
+					\item \textbf{risposte $\rightarrow$ risposta $\rightarrow$ valutazioni $\rightarrow$ valutazione[peso]} l'attributo peso dell'elemento valutazione permette di specificare la reputazione dell'utente nel momento in cui ha effettuato la valutazione alla risposta (\ref{PesiVal});
+					\item \textbf{risposte $\rightarrow$ risposta $\rightarrow$ valutazioni $\rightarrow$ valutazione[rating]} l'attributo rating dell'elemento valutazione permette di specificare il punteggio assegnato alla risposta dall'utente (\ref{PesiVal}).		
+				\end{itemize}
+			\smallskip
+			\subsubsection{Recensioni} 
+				\begin{itemize}
+					\item \textbf{recensioni $\rightarrow$ recensione[id\_cliente] } l'attributo id\_cliente dell'elemento recensione permette di specificare il cliente che ha pubblicato la recensione (\ref{RepPost});
+					\item \textbf{recensioni $\rightarrow$ recensione[id\_prodotto] } l'attributo id\_prodotto dell'elemento recensione permette di specificare il prodotto a cui si riferisce la recensione (\ref{RepPost});
+					\item \textbf{recensioni $\rightarrow$ recensione $\rightarrow$ valutazioni } l'elemento valutazioni dell'elemento recensione permette di specificare la lista di valutazioni (eventualmente vuota) associate alla recensione (\ref{RepPost});
+					\item \textbf{recensioni $\rightarrow$ recensione $\rightarrow$ valutazioni $\rightarrow$ valutazione[id\_utente]} l'attributo id\_utente dell'elemento valutazione permette di specificare l'utente che ha effettuato la valutazione alla recensione (\ref{RepPost});
+					\item \textbf{recensioni $\rightarrow$ recensione $\rightarrow$ valutazioni $\rightarrow$ valutazione[peso]} l'attributo peso dell'elemento valutazione permette di specificare la reputazione dell'utente nel momento in cui ha effettuato la valutazione alla recensione (\ref{PesiVal});
+					\item \textbf{recensioni $\rightarrow$ recensione $\rightarrow$ valutazioni $\rightarrow$ valutazione[rating]} l'attributo rating dell'elemento valutazione permette di specificare il punteggio assegnato alla recensione dall'utente (\ref{PesiVal}).			
+				\end{itemize}
+			\smallskip
+			\subsubsection{Acquisti}
+			\begin{itemize}
+				\item \textbf{acquisti $\rightarrow$ acquisto[id\_cliente] } l'attributo id\_cliente dell'elemento acquisto permette di specificare il cliente che ha effettuato l'acquisto (\ref{Introduzione});
+				\item \textbf{acquisti $\rightarrow$ acquisto[crediti\_bonus\_ricevuti] } l'attributo crediti\_bonus\_ricevuti dell'elemento acquisto permette di specificare l'ammontare di crediti bonus ricevuti dal cliente dopo l'acquisto (\ref{PortBonus});
+				\item \textbf{acquisti $\rightarrow$ acquisto[crediti\_bonus\_utilizzati] } l'attributo crediti\_bonus\_utilizzati dell'elemento acquisto permette di specificare l'ammontare di crediti bonus utilizzati dal cliente al momento dell'acquisto (\ref{PortBonus});
+				\item \textbf{acquisti $\rightarrow$ acquisto[totale\_effettivo] } l'attributo totale\_effettivo dell'elemento acquisto permette di specificare l'ammontare di crediti totali spesi dal cliente per l'acquisto. Con l'utilizzo di crediti bonus il totale effettivo può differire dalla somma dei prezzi relativi ai prodotti coinvolti nell'acquisto. (\ref{PortBonus});
+				\item \textbf{acquisti $\rightarrow$ acquisto $\rightarrow$ prodotti } l'elemento prodotti dell'elemento acquisto permette di specificare la lista di prodotti (con almeno un prodotto) coinvolti nell'acquisto (\ref{Introduzione});
+				\item \textbf{acquisti $\rightarrow$ acquisto $\rightarrow$ indirizzo\_consegna } l'elemento indirizzo\_consegna dell'elemento acquisto permette di specificare l'indirizzo di consegna relativo all'acquisto (sezione Clienti di \ref{CategorieUtenti}).
+			\end{itemize}
+			\smallskip
+			\subsubsection{Portafogli bonus} 
+			\begin{itemize}
+				\item \textbf{portafogli $\rightarrow$ portafoglio[id\_cliente] } l'attributo id\_cliente dell'elemento portafoglio permette di specificare il cliente a cui è associato il portafoglio (\ref{Portafogli});
+				\item \textbf{portafogli $\rightarrow$ portafoglio[totale] } l'attributo totale dell'elemento portafoglio permette di specificare l'ammontare di crediti bonus posseduti dal cliente (\ref{Portafogli});
+				\item \textbf{portafogli $\rightarrow$ portafoglio $\rightarrow$ saldo } l'elemento saldo dell'elemento portafoglio permette di specificare l'ammontare di crediti bonus posseduti dal cliente riferiti ad un determinato anno di acquisizione (sezione Sconto variabile di \ref{Sconti});
+				\item \textbf{portafogli $\rightarrow$ portafoglio $\rightarrow$ saldo[anno] } l'attributo anno dell'elemento saldo permette di specificare l'anno
+				a cui il saldo si riferisce (sezione Sconto variabile di \ref{Sconti}).
+			\end{itemize}
+			\smallskip
+
+			\subsubsection{Richieste ricariche} 
+			\begin{itemize}
+				\item \textbf{richieste $\rightarrow$ ricarica[id\_cliente] } l'attributo id\_cliente dell'elemento ricarica permette di specificare il cliente che ha effettuato la richiesta di ricarica (\ref{PortSTD});
+				\item \textbf{richieste $\rightarrow$ ricarica[id\_admin] } l'attributo id\_admin dell'elemento ricarica permette di specificare, se presente, l'admin che ha valutato la richiesta (sezione Admin, operazione 3 di \ref{CategorieUtenti});
+				\item \textbf{richieste $\rightarrow$ ricarica[stato] } l'attributo stato dell'elemento ricarica permette di specificare lo stato di valutazione della richiesta 
+				(sezione Admin, operazione 3 di \ref{CategorieUtenti}). Lo stato può essere:
+				\begin{itemize}
+					\item waiting (W) $\rightarrow$ la richiesta ancora non è stata valutata da nessun admin;
+					\item accepted (A) $\rightarrow$ la richiesta è stata accettata da un admin;
+					\item rejected (R) $\rightarrow$ la richiesta è stata rifiutata da un admin.
+				\end{itemize}
+				\item \textbf{richieste $\rightarrow$ ricarica $\rightarrow$ data\_valutazione } l'attributo data\_valutazione dell'elemento ricarica permette di specificare, se presente, la data in cui è stata effettuata la valutazione da un admin (sezione Admin, operazione 3 di \ref{CategorieUtenti}).
+			\end{itemize}
+			
+			\subsubsection{Carrelli} 
+			\begin{itemize}
+				\item \textbf{carrelli $\rightarrow$ carrello[id\_cliente] } l'attributo id\_cliente dell'elemento carrello permette di specificare il cliente a cui si riferisce il carrello (sezione Clienti di \ref{CategorieUtenti});
+				\item \textbf{carrelli $\rightarrow$ carrello $\rightarrow$ prodotto} l'elemento prodotto dell'elemento carrello permette di specificare il prodotto inserito nel carrello (sezione Clienti di \ref{CategorieUtenti});
+			\end{itemize}
+		\newpage
+		
+	
+	\section{Manuale utente}
+		\graphicspath{{"./img/"}}
+		In questo capitolo vengono descritte le modalità di utilizzo delle funzionalità offerte agli utenti del sistema, come riportato nei casi d'uso. \ref{CasiUso}
+			\subsection{Layout}
+				Ogni pagina dell'applicazione condivide la stessa struttura costituita da:
+				\begin{itemize}
+					\item navbar;
+					\item sidebar con meccanismo di comparsa/scomparsa.
+				\end{itemize}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=7.5cm, frame=2pt]{"screenHomepage.png"}
+				\end{figure}
+				La sidebar compare/scompare al click del bottone in alto a sinistra e mostra le opzioni possibili
+				in base al tipo di utente loggato.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=7.5cm, frame=2pt]{"screenHomepageCliente.png"}
+				\end{figure}
+				
+			\subsection{Registrazione}
+				La pagina di registrazione consente al visitatore del sito di iscriversi e diventare quindi un cliente.
+				Vengono richieste le seguenti informazioni:
+				\begin{itemize}
+					\item nome;
+					\item cognome;
+					\item indirizzo;
+					\item città;
+					\item CAP (codice numerico di 5 cifre);
+					\item username;
+					\item mail (stringa di caratteri alfanumerici che rispetta il formato standard);
+					\item password.
+				\end{itemize}
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth, frame=2pt]{"screenRegistrazione.png"}
+				\end{figure}
+
+			
+			\subsection{Accesso e gestione profilo}		
+				L'area personale consente al cliente di visualizzare gli acquisti effettuati e i propri dati:
+				\begin{itemize}
+					\item nome;
+					\item cognome;
+					\item indirizzo;
+					\item città;
+					\item CAP (codice numerico di 5 cifre);
+					\item data registrazione;
+					\item reputazione;
+					\item saldo del portafoglio standard;										
+					\item saldo del portafoglio bonus;
+					\item username;
+					\item mail (stringa di caratteri alfanumerici che rispetta il formato standard);
+				\end{itemize}
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth, frame=2pt]{"screenAreaPersonale.png"}
+				\end{figure}
+
+				
+				Tramite il pulsante "\textit{Modifica dati}" viene data la possibilità all'utente di modificare i seguenti dati:
+				\begin{itemize}
+					\item nome;
+					\item cognome;
+					\item indirizzo;
+					\item città;
+					\item CAP (codice numerico di 5 cifre);
+				\end{itemize}
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth, frame=2pt]{"screenModificaDati.png"}
+				\end{figure}
+
+				
+			\subsection{Acquisto}
+				Il cliente visualizza i prodotti in base ai criteri di ricerca inseriti.
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth, frame=2pt]{"screenCatalogo.png"}	
+				\end{figure}
+				Successivamente, il cliente ha la possibilità di accedere al dettaglio di un singolo prodotto selezionando
+				uno dei risultati ottenuti.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=6cm, frame=2pt]{"screenProdotto.png"}	
+				\end{figure}
+				Tramite il pulsante \textit{"Aggiungi al carrello"} il cliente può inserire il prodotto in oggetto nel carrello
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth, frame=2pt]{"screenCarrello.png"}	
+				\end{figure}
+				In seguito, il cliente può finalizzare l'acquisto relativo ai prodotti presenti nel carrello.
+				Qui il cliente ha la facoltà di sfruttare i crediti bonus del suo portafoglio e modificare l'indirizzo di consegna.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=10cm, height=6.5cm, frame=2pt]{"screenFinalizzaAcquisto.png"}	
+				\end{figure}
+			
+			\subsection{Inserimento recensioni}
+				Il cliente, nella pagina di un prodotto, ha la possibilità di inserire una recensione.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=4.5cm, frame=2pt]{"screenRecensioni.png"}	
+				\end{figure}
+			\subsection{Inserimento domande e risposte}
+				Nella sezione domande, il cliente visualizza l'elenco delle domande.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenDomande.png"}	
+				\end{figure}
+				Il cliente ha la facoltà di inserire una nuova domanda
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=7cm, frame=2pt]{"screenInserimentoDomanda.png"}	
+				\end{figure}
+				o di selezionare una tra quelle già presenti. Una volta acceduto alla pagina della domanda selezionata,
+				visualizza le risposte associate ad essa.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenDomanda.png"}	
+				\end{figure}
+				Inoltre, giunto a questo punto, può inserire la sua risposta alla domanda.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=6cm, frame=2pt]{"screenInserimentoRisposta.png"}	
+				\end{figure}
+			\subsection{Valutazioni interventi}
+				Ogni utente ha la possibilità di valutare domande, risposte e recensioni mediante le stelline.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenValutazione.png"}	
+				\end{figure}
+			\subsection{Ricariche portafoglio standard}
+				Il cliente nella pagina di richieste ricarica può inoltrare agli admin una nuova richiesta di ricarica.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=4cm, frame=2pt]{"screenRichiestaRicarica.png"}	
+				\end{figure}
+				A seguito di questa operazione, la richiesta è visualizzabile e gestibile, nella pagina di gestione delle richieste, dagli admin.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenGestioneRicariche.png"}	
+				\end{figure}
+			\subsection{Gestione prodotti}
+				Il gestore, una volta acceduto al catalogo, ha la possibilità di aggiungere un nuovo prodotto.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenInserimentoCatalogo.png"}	
+				\end{figure}
+				Per effettuare l'inserimento del prodotto vengono richiesti le seguenti informazioni:
+					\begin{itemize}
+						\item nome;
+						\item prezzo di listino;
+						\item categoria e tipologia;
+						\item specifiche e descrizione;
+						\item immagine.
+					\end{itemize}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenInserimentoProdotto.png"}	
+				\end{figure}
+				Per un prodotto nel catalogo, il gestore può:
+					\begin{itemize}
+						\item modificare le informazioni;
+						\item nascondere/rendere visibile il prodotto;
+						\item aggiungere un'offerta speciale.
+					\end{itemize}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenProdottoGestore.png"}	
+				\end{figure}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenModificaProdotto.png"}	
+				\end{figure}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenInserimentoOffertaSpeciale.png"}	
+				\end{figure}
+			
+			\subsection{Gestione clienti}
+				Gli admin e i gestori hanno la possibilità di visualizzare l'elenco dei clienti registrati nel sistema.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenClienti.png"}	
+				\end{figure}
+				Possono visualizzare in dettaglio le informazioni di ogni cliente.
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenDettaglioCliente.png"}	
+				\end{figure}
+				L'admin ha la facoltà di modificare i dati di un cliente e di attivare/disattivare l'account.	
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenModificaCliente.png"}	
+				\end{figure}
+			\subsection{Gestione FAQ}
+				Gli admin e i gestori hanno la possibilità di inserire nuove FAQ
+				\begin{figure}[H]
+					\centering
+					\includegraphics[height=5cm, frame=2pt]{"screenInserimentoFaq.png"}	
+				\end{figure}
+				o elevare una domanda esistente a FAQ
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\textwidth, frame=2pt]{"screenElevaFaq.png"}	
+				\end{figure}
+		\newpage
+	\section{Programmazione}
+		In questo capitolo si effettua un'analisi degli script che costituiscono il sistema.
+		\subsection{Librerie}
+			Le librerie sono presenti all'interno della directory \textit{'php/lib/'}. \\
+			\subsubsection{Installazione}
+			Gli script che permettono di effettuare l'installazione del sistema sono:
+				\begin{itemize}
+					\item \textit{install.php}, \textit{installDB.php} e \textit{installXML.php} $\rightarrow$ si occupano di effettuare la prima 
+									installazione del sistema;
+					\item \textit{popolazioneIntermedia.php} $\rightarrow$ si occupa di caricare un 'set' di dati utili per testare le funzionalità del
+									sistema.
+				\end{itemize}
+			
+			\subsubsection{Interfacciamento col database}
+			Gli script che permettono di interagire con il database sono:
+				\begin{itemize}
+					\item \textit{configurazione.php} e \textit{connection.php} $\rightarrow$ permettono di collegarsi al database;
+					\item \textit{libreriaDB.php} $\rightarrow$ contiene funzioni utilizzate dagli altri script dell'applicazione per
+																inserire/modificare/eliminare informazioni dal database
+					\item \textit{cambiaStatoCliente.php} $\rightarrow$ permette di attivare/disattivare l'account di un cliente;
+					\item \textit{verificaSessioneAttiva.php} $\rightarrow$ utilizzato ricorrentemente nell'applicazione per verificare
+						se esista una sessione valida per un utente del sistema. La verifica viene fatta sfruttando le variabili di sessione ed eseguendo la query mostrata qui di seguito.
+						\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$id = $_SESSION["id_utente"];
+$q = "select stato, reputazione, indirizzo from UTENTI where id=$id"; 
+
+try
+{
+	$rs = $handleDB->query($q);
+	
+	if ( $riga = $rs->fetch_row() ) 
+	{
+		if ( $riga[0] == 'A' )
+		{
+			$sessione_attiva = true;
+			$_SESSION['reputazione'] = $riga[1];
+			$_SESSION['indirizzo'] = $riga[2];
+		}
+	}
+	$rs->close();
+}
+catch (Exception $e){}
+						\end{lstlisting}	
+				\end{itemize}
+		
+			\subsubsection{Libreria generale}
+				All'interno dello script \textit{libreria.php} sono presenti diverse funzioni utilizzate frequentemente
+				negli altri script che costituiscono l'applicazione.
+				Tra queste funzioni risaltano:
+				\begin{itemize}
+					\item \textit{ottieniOpzioniMenu()} $\rightarrow$ funzione utile al popolamento della sidebar in base al ruolo dell'utente;
+					\item \textit{creaPopup()} $\rightarrow$ funzione utile a mostrare un popup di notifica all'utente, a seguito
+					di un determinato evento (successo/errore). Per realizzare il popup in maniera modulare, esso viene costituito dinamicamente in base all'evento accaduto; per fare ciò viene richiamato un frammento di codice html in cui si inseriscono i valori che il popup deve avere.
+					\begin{lstlisting}[language=XML]
+<div id="popupErrore" style="margin-right:%MARGINE_DESTRO_POPUP%; 
+				display:%OPZIONE_DISPLAY_POPUP%; 
+				background-color:%COLORE_SFONDO_POPUP%;">
+	<p onclick="nascondiPopup();">&times;</p>
+	<p>%CONTENUTO_FINESTRA_POPUP%</p>
+</div>
+					\end{lstlisting}
+					L'inserimento dei valori nel frammento avviene nel seguente modo:
+					\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$popup = file_get_contents("../html/popupErrore.html");
+$popup = str_replace("%CONTENUTO_FINESTRA_POPUP%", 
+								$contenuto, $popup);
+$popup = str_replace("%OPZIONE_DISPLAY_POPUP%", 
+								$opzione_display_popup_mostra, $popup);
+$popup = str_replace("%MARGINE_DESTRO_POPUP%", 
+								$margine_popup_mostra, $popup);
+
+if ($errore)
+	$popup = str_replace("%COLORE_SFONDO_POPUP%", 
+								$colore_background_popup_rosso, $popup);
+else 
+	$popup = str_replace("%COLORE_SFONDO_POPUP%", 
+								$colore_background_popup_verde, $popup);
+					\end{lstlisting}
+					\item \textit{ordinaProdottiPrezzoDecrescente()} e \textit{ordinaProdottiPrezzoCrescente()} $\rightarrow$ funzioni che implementano gli algoritmi di ordinamento per visualizzare i prodotti nel catalogo secondo un ordinamento crescente/decrescente sul prezzo.
+				\end{itemize}
+		\subsection{Gestori}
+			Per gestire i file XML utilizzati sono stati sviluppati script appositi secondo il paradigma della programmazione ad oggetti.
+			I gestori dei file XML sono presenti all'interno della directory \textit{'php/gestoriXML'}.
+			Esiste un gestore specifico per ogni file XML utilizzato. Tutti i gestori specifici ereditano le caratteristiche comuni dalla classe
+			\textit{gestoreXMLDOM}. I metodi della classe padre che vengono sfruttati dalle classi figlie sono:
+			\begin{itemize}
+				\item \textit{\_\_construct()} $\rightarrow$ metodo costruttore che si occupa di aprire e validare il file XML passato come parametro. La validazione può avvenire mediante schema o grammatica dtd;
+				\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+function __construct($file, $modalita_validazione, $pathname_schema)
+{
+	if ( file_exists($file) )
+	{
+		$this->pathname = $file;
+		$xmlString = "";
+		foreach ( file($file) as $node )
+		$xmlString .= trim($node);
+		
+		$this->oggettoDOM = new DOMDocument();
+		$this->oggettoDOM->loadXML($xmlString);
+		
+		if (($modalita_validazione == 0 && $this->oggettoDOM->validate()) ||
+		($modalita_validazione == 1 && file_exists($pathname_schema) && $this->oggettoDOM->schemaValidate($pathname_schema)))
+		$this->errori = false;
+	}
+}
+				\end{lstlisting}
+				\item \textit{salvaXML()} $\rightarrow$ metodo per salvare le modifiche sul file XML.
+				\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+function salvaXML($path)
+{
+	if ( $this->checkValidita() )
+	{
+		if ( strlen($path) == 0 )
+		$path = $this->pathname;
+		$this->oggettoDOM->save($path);
+	}
+}
+				\end{lstlisting}
+			\end{itemize}
+		
+			\bigskip
+			
+			In ogni gestore specifico è sempre presente uno o più metodi per estrarre le informazioni dai file XML.
+			L'estrazione delle informazioni avviene mediante istruzioni di questo tipo:
+			\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$figli = $this->oggettoDOM->documentElement->childNodes;
+$n_figli = count($figli);
+
+for ( $i=0; $i<$n_figli; $i++ )
+{
+	$nuova_categoria = new Categoria();
+	$nuova_categoria->id_categoria = $figli[$i]->getAttribute('id');
+	$nuova_categoria->nome_categoria = $figli[$i]->firstChild->textContent;
+	array_push($lista_categorie, $nuova_categoria);
+}
+			\end{lstlisting}
+			
+			Inoltre, in diversi gestori sono presenti metodi di inserimento e eliminazione di informazioni dai file XML.
+			\begin{itemize}
+				\item l'inserimento di nuove informazioni avviene mediante istruzioni di questo tipo:
+				\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$nuova_ricarica = $this->oggettoDOM->createElement('ricarica');
+$nuova_ricarica->setAttribute('id', $id_nuova_ricarica);
+$nuova_ricarica->setAttribute('id_cliente', $id_cliente);
+$nuova_ricarica->setAttribute('stato', 'W');
+$data_richiesta = $this->oggettoDOM->createElement('data_richiesta', 
+											date('Y-m-d'));
+$crediti_richiesti = $this->oggettoDOM->createElement('crediti_richiesti', 
+											$crediti);
+$nuova_ricarica->appendChild($data_richiesta);
+$nuova_ricarica->appendChild($crediti_richiesti);
+
+$this->oggettoDOM->documentElement->appendChild($nuova_ricarica);
+
+$this->salvaXML($this->pathname);
+				\end{lstlisting}				
+				\item l'eliminazione di informazioni avviene mediante istruzioni di questo tipo:
+				\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$figli = $this->oggettoDOM->documentElement->childNodes;
+$n_figli = count($figli);
+
+for ( $i=0; $i<$n_figli && !$esito; $i++ )
+{
+	if ( $figli[$i]->getAttribute('id_cliente') == $id_cliente )
+	{
+		while( count($figli[$i]->childNodes) > 0 )
+		$figli[$i]->removeChild($figli[$i]->firstChild);
+	}
+	
+	$this->salvaXML($this->pathname);
+}
+				\end{lstlisting}
+			\end{itemize}
+		\subsection{Altri aspetti}
+			Nella directory \textit{'php/'} sono presenti tutti gli altri script che costituiscono l'applicazione,
+			i quali si appoggiano sugli script descritti nelle sezioni precedenti. \\
+			Le pagine dell'applicazione vengono costruite mediante il meccanismo dei frammenti, come già descritto per il popup.\\
+			I frammenti sfruttati dagli script sono collocati all'interno della directory \textit{'html/'}.
+			Tra questi script si evidenzia il meccanismo di controllo dati utilizzato per validare le informazioni
+			che l'utente inserisce mediante form. \\
+			In caso di errore, viene mostrato il popup all'utente (vedi sezione precedente).\\
+			Questo meccanismo viene implementato mediante istruzioni di questo tipo: \newpage
+			\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}]
+$domanda = trim($_POST["domanda"]);
+if ( strlen($domanda) > 0 )
+{
+	$gestore_domande = new GestoreDomande();
+	$id_domanda = $gestore_domande->inserisciDomanda($domanda, 
+								$_SESSION["id_utente"], "false");
+	
+	if ( $id_domanda != null )
+	{
+		$err = false;
+		header("Location: domande.php");
+	}
+	else
+	$msg = "Errore nell'inserimento della domanda";
+}
+			\end{lstlisting}
+			\medskip
+			Inoltre, all'interno di questa directory, sono presenti degli script che vengono eseguiti mediante tecnologia AJAX.
+			Questi script sono:
+			\begin{itemize}
+				\item \textit{inserisciValutazione.php};
+				\item \textit{cambiaStatoCliente.php};
+				\item \textit{eliminaIntervento.php};
+				\item \textit{ottieniTipologiePerCategoria.php};
+				\item \textit{eliminaProdottoDaCarrello.php};
+				\item \textit{ottieniTotaleAggiornato.php}.
+			\end{itemize}
+		\subsection{Lato client}
+			All'interno della directory \textit{'js/'} è presente il file javascript \textit{'utility.js'}.
+			Qui troviamo le funzioni javascript che vengono chiamate all'interno delle pagine dell'applicazione.
+			Tra esse evidenziamo due categorie fondamentali:
+			\begin{itemize}
+				\item funzioni per modificare parametri di stile css. La modifica avviene mediante istruzioni del tipo:
+				\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}, language=javascript]
+function nascondiPopup()
+{
+	popup = document.getElementById("popupErrore");
+	popup.style.marginRight = "-100%";
+	setTimeout(function(){popup.style.display = "none";}, 300);
+}
+				\end{lstlisting}
+				\item funzioni per chiamare in maniera asincrona script lato server, sfruttando la tecnologia AJAX. Ad ogni chiamata corrispondono due funzioni:
+					\begin{itemize}
+						\item funzione per invocare script lato server:
+						\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}, language=javascript]
+function aggiornaTotale(id_cliente)
+{
+	input_crediti = document.getElementById('casellaCrediti');
+	
+	query_string = 'id_cliente=' + id_cliente 
+					+ '&crediti_utilizzati=' + input_crediti.value.trim();
+	
+	if ( input_crediti.value.trim() != "" )
+	{
+		xhr = new XMLHttpRequest();
+		xhr.open("POST", "ottieniTotaleAggiornato.php");
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.onload = function(){ callbackAggiornaTotale(xhr) };
+		xhr.send(query_string);
+	}
+}
+						\end{lstlisting}
+						\item funzione per interpretare il risultato proveniente dal server (funzione di callback):
+						\begin{lstlisting}[backgroundcolor=\color{coloreSfondoGrammatiche}, language=javascript]
+function callbackAggiornaTotale(xhr)
+{
+	if ( !xhr.responseText )
+		alert("Applicazione crediti fallita");
+	else
+	{
+		container_totale = document.getElementById('totale');
+		container_totale.innerHTML = xhr.responseText;
+	}
+}
+						\end{lstlisting}
+					\end{itemize}
+			\end{itemize}
+			\newpage
+	\section{Procedure d'installazione e elenco credenziali}
+		L'installazione si articola in due fasi:
+		\begin{itemize}
+			\item installazione preliminare;
+			\item installazione intermedia.
+		\end{itemize}
+	
+		\subsection{Installazione preliminare}
+		I passaggi per eseguire l'installazione preliminare sono:
+		\begin{enumerate}
+			\item modificare i parametri di connessione al database nel file \textit{'php/lib/configurazione.php'};
+			\item lanciare dal browser lo script di installazione \textit{'php/lib/install.php'}.
+		\end{enumerate}
+		Alla fine dell'installazione preliminare tutti i file XML sono \underline{vuoti} ed esistono solamente gli 
+		account di un admin e di un gestore (vedi credenziali sotto).
+		
+		\subsection{Installazione intermedia}
+		Per eseguire l'installazione intermedia bisogna lanciare dal browser lo script di installazione \textit{'php/lib/popolazioneIntermedia.php'}.
+		Alla fine dell'installazione intermedia i file XML saranno popolati con alcune informazioni (prodotti, acquisti, interventi ...) e saranno presenti due account di tipo cliente (vedi credenziali sotto).
+		
+		\subsection{Elenco credenziali}
+		Le credenziali utilizzate nel sistema sono: \\
+		\begin{center}
+		\begin{tabular}{ | c | c | c| }
+			\hline
+				\textbf{Username} & \textbf{Password}  & \textbf{Tipo account} \\
+			\hline
+				matteo.ventali & unitecno & admin \\
+			\hline
+				stefano.rosso & unitecno & gestore \\
+			\hline
+				lionel.messi & unitecno & cliente \\
+			\hline
+				cristiano.ronaldo & unitecno & cliente \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{flushleft}
+\end{document}

@@ -1,7 +1,6 @@
 #sidebar
 {
     position: absolute;
-    top: 15%;
     height: 85%;
     width: 20%;
     background-color: #11999E;
@@ -23,7 +22,7 @@
     font-size: 50px;
 }
 
-ul 
+.ulSidebar
 {
     list-style-type: none;
     margin: 0;
@@ -35,9 +34,9 @@ ul
     align-items: center;
 }
 
-li
+.liSidebar
 {
-    height: 10%;
+    min-height: 10%;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -47,7 +46,7 @@ li
     overflow: auto;
 }
 
-li:hover
+.liSidebar:hover
 {
     background-color: #30e3ca;
 }

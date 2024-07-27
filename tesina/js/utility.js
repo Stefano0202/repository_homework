@@ -10,6 +10,11 @@ function gestisciSidebar(param)
     // Verifico se la sidebar e' mostrata o meno tramite il testo 
     if ( param == 0 ) // Mostro la sidebar
     {
+        // Prelevo l'altezza (in px) dell'intestazione in modo che 
+        // a tutti i livelli di zoom venga mostrata 
+        // sotto la navbar
+        altezza = document.getElementById('navbar').clientHeight;
+        sidebar.style.top = altezza + 'px';
         sidebar.style.left = "0%";
         btn1.style.display = "none";
         btn2.style.display = "block";
@@ -25,11 +30,11 @@ function gestisciSidebar(param)
 function nascondiPopup()
 {
     // Prendo il riferimento alla finestra popup
-    popup = document.getElementById("sezioneErrore");
+    popup = document.getElementById("popupErrore");
 
     // Nascondo il popup
-    popup.firstElementChild.style.marginRight = "-100%";
-    
+    popup.style.marginRight = "-100%";
+
     // Tolgo la sezione errore al termine dell'animazione
     setTimeout(function(){popup.style.display = "none";}, 300);
 }
@@ -168,7 +173,7 @@ function inserisciValutazione(id_intervento, stella_premuta)
                             + "&id_intervento_xml=" + id_intervento_xml + "&tipo_intervento=" + tipo_intervento
                             + "&stella_premuta=" + stella_premuta;
     
-    // Oggetto per connessione mediante tecnologia AJAX
+                            // Oggetto per connessione mediante tecnologia AJAX
     xhr = new XMLHttpRequest();
     xhr.open("POST", "inserisciValutazione.php");
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -260,7 +265,7 @@ function callbackEliminaIntervento(xhr, tipo)
     // Notifica tramite alert in caso di errore
     if ( !xhr.responseText )
         alert("Eliminazione intervento fallita");
-    
+
     // Se e' stata eliminata una domanda ritorno alla pagina di resoconto domande
     // altrimenti refresh della pagina
     if (tipo != 'domanda')
@@ -269,8 +274,165 @@ function callbackEliminaIntervento(xhr, tipo)
         location.href = 'domande.php';
 }
 
-function vaiDettaglioAcquisto(id_acquisto) 
+function vaiDettaglioAcquisto(container) 
 {
     // Eseguo il submit del form
+    // Il form e' il secondo figlio del container acquisto
+    form = container.children[1];
+    form.submit();
+}
 
+function svuotaTendinaTipologie()
+{
+    // Per ogni tipologia la elimino
+    tendina_tipologie = document.getElementById('tendinaTipologia');
+    while (tendina_tipologie.firstChild) 
+        tendina_tipologie.removeChild(tendina_tipologie.firstChild);
+    
+    // Rimetto l'opzione di default
+    opt_default = document.createElement('option');
+    opt_default.setAttribute('value', '0');
+    opt_default.innerHTML = 'Seleziona tipologia';
+    tendina_tipologie.appendChild(opt_default);
+}
+
+function ottieniTipologie(tendina_categoria)
+{
+    // Id della categoria
+    id_categoria = tendina_categoria.value;
+
+    // Se la categoria e' 0 non devo ottenere tipologie
+    // ma svuotare la tendina delle tipologie
+    if ( id_categoria != 0 )
+    {
+        // Composizione della query string
+        query_string = 'id_categoria=' + id_categoria;
+        
+        // Richiesta AJAX per ottenere le tipologie
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", "ottieniTipologiePerCategoria.php");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onload = function(){ callbackPopolaTipologie(xhr) }; // Definisco una funzione di callback implicita che chiama quella sotto
+        xhr.send(query_string);
+    }
+    else
+        svuotaTendinaTipologie();
+}
+
+function callbackPopolaTipologie()
+{
+    // Ricevo dallo script lato client una risposta in JSON
+    // Effettuo il parsing della risposta per estrarre le tipologie
+    tipologie = JSON.parse(xhr.responseText);
+
+    // Per ogni tipologia creo una option all'interno della tendina
+    svuotaTendinaTipologie();
+    tendina_tipologie = document.getElementById('tendinaTipologia');
+    for ( i=0; i < tipologie.length; i++ )
+    {
+        // Creo la nuova option
+        nuova_option = document.createElement('option');
+        nuova_option.setAttribute('value', tipologie[i].id_tipo);
+        nuova_option.innerHTML = tipologie[i].nome_tipo;
+
+        // Aggancio la nuova option
+        tendina_tipologie.appendChild(nuova_option);
+    }
+}
+
+function azzeraRicercaProdotti()
+{
+    // Riferimento al form
+    form = document.getElementById('ricercaProdotti');
+
+    // Azzero i campi
+    contenutoRic = document.getElementsByName('contenutoRicerca')[0];
+    contenutoRic.innerHTML = '';
+    svuotaTendinaTipologie();
+}
+
+function applicaOrdinamento(form_ordinamento)
+{
+    // Prendo il riferimento al form
+    form = document.getElementById(form_ordinamento);
+
+    // Eseguo il submit del form per applicare l'ordinamento
+    form.submit();
+}
+
+function azzeraFormInserimentoProdotto()
+{
+    // Azzeramento campi form
+    document.getElementsByName('nome')[0].value   = "";
+    document.getElementsByName('prezzoListino')[0].value   = "";
+    document.getElementsByName('id_categoria')[0].value   = 0;
+    document.getElementsByName('id_tipologia')[0].value   = 0;
+    document.getElementsByName('specifiche')[0].value   = "";
+    document.getElementsByName('immagine')[0].value   = null;
+}
+
+function azzeraFormOffertaSpeciale()
+{
+    // Azzeramento campi form
+    document.getElementsByName('dataInizio')[0].value   = "";
+    document.getElementsByName('dataFine')[0].value   = "";
+    document.getElementsByName('percentuale')[0].value   = "";
+    document.getElementsByName('crediti')[0].value   = "";
+}
+
+function rimuoviProdottoDaCarrello(id_cliente, id_prodotto)
+{
+    // Composizione della query string
+    query_string = 'id_cliente=' + id_cliente + "&id_prodotto=" + id_prodotto;
+
+    // Richiesta AJAX per eliminare il prodotto dal carrello
+    xhr = new XMLHttpRequest();
+    xhr.open("POST", "eliminaProdottoDaCarrello.php");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function(){ callbackEliminaProdottoDaCarrello(xhr) }; // Definisco una funzione di callback implicita che chiama quella sotto
+    xhr.send(query_string);
+}
+
+function callbackEliminaProdottoDaCarrello(xhr)
+{
+    // Ricevo vero o falso a seconda della riuscita dell'operazione
+    // Notifica tramite alert in caso di errore
+    if ( !xhr.responseText )
+        alert("Eliminazione intervento fallita");
+
+    // A prescindere refresh della pagina
+    location.reload();
+}
+
+function aggiornaTotale(id_cliente)
+{
+    // Riferimento alla casella crediti
+    input_crediti = document.getElementById('casellaCrediti');
+    
+    // Composizione della query string
+    query_string = 'id_cliente=' + id_cliente + '&crediti_utilizzati=' + input_crediti.value.trim();
+
+    // Richiesta AJAX per ottenere il totale aggiornato se la casella non e' vuota
+    if ( input_crediti.value.trim() != "" )
+    {
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", "ottieniTotaleAggiornato.php");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onload = function(){ callbackAggiornaTotale(xhr) }; // Definisco una funzione di callback implicita che chiama quella sotto
+        xhr.send(query_string);
+    }
+}
+
+function callbackAggiornaTotale(xhr)
+{
+    // Ricevo vero o falso a seconda della riuscita dell'operazione
+    // Notifica tramite alert in caso di errore
+    if ( !xhr.responseText )
+        alert("Applicazione crediti fallita");
+    else
+    {
+        // Cambio il valore del totale da mostrare all'utente
+        container_totale = document.getElementById('totale');
+        container_totale.innerHTML = xhr.responseText;
+    }
 }
